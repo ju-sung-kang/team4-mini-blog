@@ -1,10 +1,10 @@
 import './App.css';
 import WritePosting from './page/write-posting/index';
-import Reply from './components/reply/index';
+import Main from './page/main/index';
 
 function App() {
   return (
-    <Reply/>
+    <Main/>
   );
 }
 
