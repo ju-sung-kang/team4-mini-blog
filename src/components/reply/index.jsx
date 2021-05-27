@@ -2,8 +2,8 @@
 
 import React, {useState} from 'react';
 import * as S from './styles.js';
-import userInfo from '../../userInfo.js';
-import reply_list from '../../reply-list.js';
+import userInfo from './userInfo.js';
+import reply_list from './reply-list.js';
 
 function Reply() {
 
