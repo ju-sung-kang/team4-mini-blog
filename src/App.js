@@ -6,8 +6,7 @@ import Reply from './components/reply/index';
 function App() {
   return (
     <>
-    
-    <Reply/>
+    <Main/>
     </>
   );
 }
