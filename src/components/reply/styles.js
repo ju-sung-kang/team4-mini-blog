@@ -37,13 +37,52 @@ export const ReplyAgain = styled.button`
     border: 0;
     outline: 0;
     background-color: transparent;
+    &:hover {
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
+`;
 
+export const ReplyDelete = styled.button`
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    float: right;
+    &:hover {
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
+`;
+
+export const ReplyEdit = styled.button`
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    float: right;
+    &:hover {
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
+`;
+
+export const Cancel = styled.button`
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    float: right;
+    &:hover {
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
 `;
 
 export const ReplyLikeBtn = styled.button`
     border: 0;
     outline: 0;
     background-color: transparent;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 export const WritingReply = styled.div`
@@ -71,3 +110,4 @@ export const ReplySubmitBtn = styled.button`
     right: 10px;
     bottom: 10px;  
 `;
+
