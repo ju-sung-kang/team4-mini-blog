@@ -1,11 +1,15 @@
 import React, {useState, useEffect} from 'react';
 import * as S from './styles.js';
-import userInfo from '../reply/userInfo.js';
+import firebase from 'firebase';
+import db from '../../Firebase.js';
 import categoryList from './category-list.js';
 
 function Widget() {
 
-    let profile_image_src = userInfo[0].profile_image + ".jpg";
+    let [userID, setUserID] = useState();
+    let [userInfo, setUserInfo] = useState({id:"", name:""});
+    let [profileImageSrc, setProfileImageSrc] = useState();
+
     const API_KEY = "53da2272c20bab85b6e0a1ba478a531e";
     const [loc, setLoc] = useState({lat: 0, long: 0});
     const [weather, setWeather] = useState({temperature: 0, name: "", icon: ""})
@@ -13,6 +17,32 @@ function Widget() {
     const [total, setTotal] = useState(0);
 
     useEffect(()=>{
+
+        setUserID('toodury');
+    }, []);
+
+
+    useEffect(()=>{
+
+        if (userID !== undefined) {
+            let docRefUserInfo = db.collection("userInfo").doc(userID);
+            docRefUserInfo.onSnapshot((doc) => {
+                setUserInfo(doc.data());
+            });
+        }
+    }, [userID]);
+
+
+    useEffect(()=>{
+
+        if (userInfo !== undefined) {
+            setProfileImageSrc(userInfo.profile_image + ".jpg");
+        }
+    }, [userInfo])
+
+
+    useEffect(()=>{
+
         setToday(today + 1);
         setTotal(total + 1);
     }, []);
@@ -32,6 +62,7 @@ function Widget() {
     }
 
     const getWeather = () => {
+
         fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.long}&APPID=${API_KEY}`)
         .then(response => response.json())
         .then(json => {
@@ -50,9 +81,9 @@ function Widget() {
     return (
         <S.Widget>
             <S.Profile>
-                <S.ProfileImage src={profile_image_src} />
-                <S.ProfileName>{userInfo[0].name}({userInfo[0].id})</S.ProfileName>
-                <S.ProfileIntro>{userInfo[0].intro}</S.ProfileIntro>
+                <S.ProfileImage src={profileImageSrc} />
+                <S.ProfileName>{userInfo.name}({userInfo.id})</S.ProfileName>
+                <S.ProfileIntro>{userInfo.intro}</S.ProfileIntro>
                 <S.ProfileTag>프로필</S.ProfileTag>
                 <S.ProfileTag>쪽지</S.ProfileTag>
             </S.Profile>
