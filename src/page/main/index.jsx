@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import * as S from './styles';
-import Footer from '../../components/footer';
 import Header from '../../components/header';
 import PostList from '../../components/post-list';
+import Footer from '../../components/footer';
 
 
 const Main = () => {
