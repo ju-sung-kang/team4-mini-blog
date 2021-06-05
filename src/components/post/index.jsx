@@ -3,7 +3,7 @@ import * as S from './styles';
 
 const Post = (props) => {
     return (
-        <S.PostContainer>{props.title}</S.PostContainer>
+        <S.PostContainer onClick={props.onClick}>{props.title}</S.PostContainer>
     );
 }
 

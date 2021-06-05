@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import db from '../../firebase';
 import Post from '../post';
 import * as S from './styles';
 
 const PostList = () => {
+  const history = useHistory();
   const [postList, setPostList] = useState([{title:'add'}]);
   useEffect(() => {
     getPostList();
   }, []);
 
   const getPostList = async () => { 
-    db.collection('categories').doc('6aClaivRA34P8pp2WRIV').collection('posts')
+    db.collection('categories').doc('rkPeoyYAgGPXWEChvB6W').collection('posts')
     .get()
     .then((querySnapshot) => {
       var array = [];
       querySnapshot.forEach((doc) => {
           const tmp = doc.data();
-          array.push({title: tmp.title});
+          const postId = doc.id;
+          array.push({postId: postId, title: tmp.title});
       });
       setPostList(array);
     })
@@ -24,8 +27,13 @@ const PostList = () => {
         console.log("Error getting documents: ", error);
     })
   };
-  const postClick = (postId) => {
-    // 해당 postId를 가진 글을 볼 수 있도록 라우팅
+  const postClick = (e) => {
+    e.preventDefault();
+    console.log("clicked");
+    history.push({
+      pathname: '/post',
+      search: `?categoryId=rkPeoyYAgGPXWEChvB6W&postId=${e.target.id}`,
+    });
   }
 
   return (
@@ -36,11 +44,11 @@ const PostList = () => {
           <S.NoPost>개설된 채팅방이 없습니다!</S.NoPost>
           ) : (
           postList.map((post) => (
-            <Post
+            <S.PostContainer
+              id={post.postId}
+              key={post.postId}
               title={post.title}
-              onClick={() => {
-                //history.push(`/post/${post.id}`);
-              }}
+              onClick={postClick}
             />
           ))
         )}
