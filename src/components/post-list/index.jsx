@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import db from '../../firebase';
-import Post from '../post';
 import * as S from './styles';
 
 const PostList = () => {
