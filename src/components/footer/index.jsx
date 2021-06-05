@@ -1,8 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
 import * as S from './styles.js';
 import db from '../../firebase.js';
 
-const Footer = () => {
+const Footer = (props) => {
 
     const API_KEY = "53da2272c20bab85b6e0a1ba478a531e";
     const [loc, setLoc] = useState({lat: 0, long: 0});
@@ -12,7 +12,7 @@ const Footer = () => {
 
     const [categoryList, setCategoryList] = useState([]);
     const [user, setUser] = useState([]);
-    const [currentCategory, setCurrentCategory] = useState('6aClaivRA34P8pp2WRIV');
+    const [curCategory, setCurrentCategory] = useState(props.currentCategory);
     const [cnt, setCounter] = useState(1);
 
     useEffect(()=>{
@@ -45,7 +45,7 @@ const Footer = () => {
     }
 
     const categoryClick = (categoryId) => {
-        setCurrentCategory(categoryId)
+        props.categoryHandler(categoryId);
     }
 
     const getUser = async () => {
@@ -72,12 +72,12 @@ const Footer = () => {
     const getPosition = () => {
 
         if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position)=>{
-            setLoc({
-            lat: position.coords.latitude,
-            long: position.coords.longitude
-            });
-        })
+            navigator.geolocation.getCurrentPosition((position)=>{
+                setLoc({
+                lat: position.coords.latitude,
+                long: position.coords.longitude
+                });
+            })
         }
 
         getWeather();
@@ -112,7 +112,7 @@ const Footer = () => {
                     <S.NoCategory>설정에서 카테고리를 추가해주세요!</S.NoCategory>
                 ) : (
                   categoryList.map((category) => (
-                    <S.CategoryLabel onClick={()=>categoryClick(category.categoryId)}>
+                    <S.CategoryLabel key={category.categoryId} onClick={()=>categoryClick(category.categoryId)}>
                         {category.categoryName}
                     </S.CategoryLabel>
                   ))
