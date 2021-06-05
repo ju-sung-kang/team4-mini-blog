@@ -28,12 +28,6 @@ export const ProfileIntro = styled.p`
     font-size: 13px;
 `;
 
-
-export const ProfileTag = styled.a`
-    font-size: 10px;
-    margin-right: 30px;
-`;
-
 export const Weather = styled.div`
     display: inline-block;
     margin-left: 200px;

@@ -2,51 +2,44 @@ import React, {useState, useEffect} from 'react';
 import * as S from './styles.js';
 import firebase from 'firebase';
 import db from '../../Firebase.js';
-import categoryList from './category-list.js';
 
 function Widget() {
 
-    let [userID, setUserID] = useState();
-    let [userInfo, setUserInfo] = useState({id:"", name:""});
-    let [profileImageSrc, setProfileImageSrc] = useState();
+    let [blogInfo, setBlogInfo] = useState();   // 블로그 정보
+    let [categoryList, setCategoryList] = useState();   // 카테고리 리스트
+    let [categoryID, setCategoryID] = useState();   // 카테고리 ID
 
+    // 날씨 관련 정보
     const API_KEY = "53da2272c20bab85b6e0a1ba478a531e";
     const [loc, setLoc] = useState({lat: 0, long: 0});
     const [weather, setWeather] = useState({temperature: 0, name: "", icon: ""})
-    const [today, setToday] = useState(0);
-    const [total, setTotal] = useState(0);
 
+    // 블로그, 카테고리 정보 가져오기
     useEffect(()=>{
 
-        setUserID('toodury');
+        let docRef = db.collection("blogInfo").doc("LHe68t24dP6pFIVZAWZp");
+
+        docRef.onSnapshot((doc)=>{
+            setBlogInfo(doc.data());
+        })
+
+        db.collection("categories")
+        .onSnapshot((querySnapShot)=>{
+            let tmpCategoryList = [];
+            let tmpCategoryID = [];
+            querySnapShot.forEach((doc)=>{
+                tmpCategoryList.push(doc.data());
+                tmpCategoryID.push(doc.id);
+            })
+            console.log(tmpCategoryList);
+            setCategoryList(tmpCategoryList);
+            setCategoryID(tmpCategoryID);
+        })
+
     }, []);
 
 
-    useEffect(()=>{
-
-        if (userID !== undefined) {
-            let docRefUserInfo = db.collection("userInfo").doc(userID);
-            docRefUserInfo.onSnapshot((doc) => {
-                setUserInfo(doc.data());
-            });
-        }
-    }, [userID]);
-
-
-    useEffect(()=>{
-
-        if (userInfo !== undefined) {
-            setProfileImageSrc(userInfo.profile_image + ".jpg");
-        }
-    }, [userInfo])
-
-
-    useEffect(()=>{
-
-        setToday(today + 1);
-        setTotal(total + 1);
-    }, []);
-
+    // 현재 위치 가져오기
     const getPosition = () => {
 
         if (navigator.geolocation) {
@@ -61,6 +54,8 @@ function Widget() {
         getWeather();
     }
 
+    
+    // API 연동으로 날씨 가져오기
     const getWeather = () => {
 
         fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.long}&APPID=${API_KEY}`)
@@ -76,41 +71,30 @@ function Widget() {
 
     //useEffect(getPosition, []);
 
+    // 날씨 아이콘 사진
     const img_url = `http://openweathermap.org/img/w/${weather.icon}.png`;
 
     return (
         <S.Widget>
+            {
+            blogInfo && categoryList && categoryID
+            ?<>
             <S.Profile>
-                <S.ProfileImage src={profileImageSrc} />
-                <S.ProfileName>{userInfo.name}({userInfo.id})</S.ProfileName>
-                <S.ProfileIntro>{userInfo.intro}</S.ProfileIntro>
-                <S.ProfileTag>프로필</S.ProfileTag>
-                <S.ProfileTag>쪽지</S.ProfileTag>
+                <S.ProfileImage src={blogInfo.profileImage} />
+                <S.ProfileName>{blogInfo.nickName}</S.ProfileName>
+                <S.ProfileIntro>{blogInfo.introduction}</S.ProfileIntro>
             </S.Profile>
             <S.Category>
                 <p>Category</p>
                 {
-                    categoryList.map((categoryItem)=>{
-                        const link = "/" + categoryItem.id;
+                    categoryList.map((categoryItem, i)=>{
+                        const link = "/" + categoryID[i];
 
                         return (
                             <S.CategoryList>
                                 <S.CategoryItem>
                                     <S.CategoryItemLink href={link}>{categoryItem.name}</S.CategoryItemLink>
                                 </S.CategoryItem>
-                                <S.SubCategoryList>
-                                {
-                                    categoryItem.subcategory.map((subCategory)=>{
-                                        const sublink = "/" + subCategory.id;
-
-                                        return (
-                                        <S.CategoryItem>
-                                            <S.CategoryItemLink href={sublink}>{subCategory.name}</S.CategoryItemLink>
-                                        </S.CategoryItem>
-                                        )
-                                    })
-                                }
-                                </S.SubCategoryList>
                             </S.CategoryList>    
                             )
                         })
@@ -122,16 +106,9 @@ function Widget() {
                 <h5>온도: {weather.temperature}</h5>
                 <h5>날씨: {weather.name}</h5>
             </S.Weather>
-            <S.Visit>
-                <S.VisitToday>
-                    <S.VisitText>Today</S.VisitText>
-                    <S.VisitCnt1>{today}</S.VisitCnt1>
-                </S.VisitToday>
-                <S.VisitTotal>
-                    <S.VisitText>Total</S.VisitText>
-                    <S.VisitCnt2>{total}</S.VisitCnt2>
-                </S.VisitTotal>
-            </S.Visit>
+            </>
+            : null
+            }
         </S.Widget>
     )
 }
