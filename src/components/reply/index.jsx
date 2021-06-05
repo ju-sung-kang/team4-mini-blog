@@ -1,121 +1,113 @@
 /* eslint-disable */
 
 import React, {useState, useEffect} from 'react';
-import {v4 as uuidv4} from 'uuid';
 import firebase from 'firebase';
 import db from '../../Firebase.js';
 import * as S from './styles.js';
 
 function Reply() {
 
-    // 다른 곳에서 가져올 애들
-    let [postingID, setPostingID] = useState(); // 글 아이디
-    let [userID, setUserID] = useState();       // 유저 아이디
-
-    // firebase에서 가져올 애들
-    let [userInfo, setUserInfo] = useState();       // 유저 정보
-    let [reply, setReply] = useState({text: []});   // 댓글 관련 정보
-
-    // userInfo에서 가져올 애들
-    let [postLiked, setPostLiked] = useState([]);    // 내가 좋아요 한 글 목록
-    let [replyLiked, setReplyLiked] = useState([]);   // 내가 좋아요 한 댓글 목록
-
-    // 이건 posting에서 가져올 거라 일단 하드코딩함
-    let [postLikeCnt, setPostLikeCnt] = useState(0);    // 좋아요 수  
-
     // 이 페이지에서만 쓸 애들
+    let [postLiked, setPostLiked] = useState(false); // 글 좋아요 눌렀는지 여부
+    let [replyLiked, setReplyLiked] = useState([false]);   // 댓글 좋아요 눌렀는지 여부
     let [replyArrow, setReplyArrow] = useState("↓");    // 댓글 버튼 화살표
     let [replyAgain, setReplyAgain] = useState([false]); // 대댓글 쓰기 눌렀는지 여부
     let [replyContent, setReplyContent] = useState(""); // 댓글 내용
     let [replyEditContent, setReplyEditContent] = useState(""); // 댓글 수정 내용 저장
     let [isEditing, setIsEditing] = useState([false]);  // 댓글을 수정 중인지
+
+    // props로 주어지는 데이터
+    let [categoryID, setCategoryID] = useState();
+    let [postID, setPostID] = useState();
+    
+    // 정보 설정
+    let [post, setPost] = useState();
+    let [reply, setReply] = useState();
+    let [replyID, setReplyID] = useState();
     
 
     // 유저 아이디, 글 아이디 설정
     useEffect(()=>{
 
-        setPostingID('abc');
-        setUserID('toodury');
+        setCategoryID("lOm8hxxVxfNDv8iLzVqa");
+        setPostID("StCE74Tk6GFGNJMiCmxX");
     }, [])
-    
-
-    // 댓글 데이터 가져오기
-    useEffect(() => {
-
-         if (postingID !== undefined) {
-            let docRefReply = db.collection("reply").doc(postingID);
-            docRefReply.onSnapshot((doc) => {
-                setReply(doc.data());
-            });
-        }
-    }, [postingID]);
 
 
-    // 유저 데이터 가져오기
+    // 글 정보, 댓글 싹 다 가져오기
     useEffect(()=>{
 
-        if (userID !== undefined) {
-            let docRefUserInfo = db.collection("userInfo").doc(userID);
-            docRefUserInfo.onSnapshot((doc) => {
-                setUserInfo(doc.data());
-            });
-        }
-    }, [userID])
+        if (categoryID !== undefined && postID !== undefined) {
+            db.collection("categories").doc(categoryID)
+            .collection("posts").doc(postID).collection("replies")
+            .orderBy("time")
+            .onSnapshot((querySnapShot)=>{
+                let tmpReply = [];
+                let tmpReplyID = [];
+                querySnapShot.forEach((doc)=>{     
+                    tmpReply.push(doc.data());
+                    tmpReplyID.push(doc.id);
+                })
+                setReply(tmpReply);
+                setReplyID(tmpReplyID);
+            }); // 댓글 가져오기
 
+            let postRef = db.collection("categories").doc(categoryID)
+            .collection("posts").doc(postID);
+            postRef.onSnapshot((doc)=>{
+                setPost(doc.data());
+            }); // 글 정보 가져오기
+        }  
+    }, [categoryID, postID])
+    
 
     // 댓글 개수를 바탕으로 필요한 상태들 초기화
     useEffect(()=>{
         
         let tmpReplyAgain = [...replyAgain];
         let tmpIsEditing = [...isEditing];
+        let tmpReplyLiked = [...replyLiked];
 
-        for (let i = 0; i < reply.text.length; i++) {
-            if (tmpReplyAgain[i] === undefined) {
-                tmpReplyAgain[i] = false;
+        if (reply !== undefined) {            
+            for (let i = 0; i < reply.length; i++) {
+                if (tmpReplyAgain[i] === undefined) {
+                    tmpReplyAgain[i] = false;
+                }
+                if (tmpIsEditing[i] === undefined) {
+                    tmpIsEditing[i] = false;
+                }
+                if (tmpReplyLiked[i] === undefined) {
+                    tmpReplyLiked[i] = false;
+                }
             }
-            if (tmpIsEditing[i] === undefined) {
-                tmpIsEditing[i] = false;
-            }
+            setReplyAgain(tmpReplyAgain);
+            setIsEditing(tmpIsEditing);
+            setReplyLiked(tmpReplyLiked);
         }
-        setReplyAgain(tmpReplyAgain);
-        setIsEditing(tmpIsEditing);
     }, [reply])
 
 
-    // 유저가 좋아요 한 글, 댓글 목록 저장
-    useEffect(()=>{
-        
-        if (userInfo !== undefined) {
-            setPostLiked(userInfo.postLiked);
-            setReplyLiked(userInfo.replyLiked);
-        }
-    }, [userInfo])
-    
+    // 글 좋아요 누르기
+    const clickLikeButton = ()=>{
 
-    // 글 좋아요 버튼 누르기
-    const clickLikeButton = () => {
-
-        let tmpPostLikeCnt = postLikeCnt;
-        let tmpPostLiked = [...postLiked];
-        
-        if (postLiked.find(id=>id===postingID) !== undefined) {
-            setPostLikeCnt(tmpPostLikeCnt - 1);
-            let idx = tmpPostLiked.findIndex(id=>id===postingID);
-            tmpPostLiked.splice(idx, 1);
-            db.collection('userInfo')
-            .doc(userID)
+        if (postLiked) {
+            db.collection("categories")
+            .doc(categoryID)
+            .collection("posts")
+            .doc(postID)
             .update({
-                postLiked: tmpPostLiked
-            })
+            heart: post.heart - 1
+        });
         } else {
-            setPostLikeCnt(tmpPostLikeCnt + 1);
-            tmpPostLiked.push(postingID);
-            db.collection('userInfo')
-            .doc(userID)
+            db.collection("categories")
+            .doc(categoryID)
+            .collection("posts")
+            .doc(postID)
             .update({
-                postLiked: tmpPostLiked
-            })
+            heart: post.heart + 1
+        });
         }
+        setPostLiked(!postLiked);
     }
 
 
@@ -139,41 +131,33 @@ function Reply() {
     }
 
 
-    // 댓글 좋아요 버튼 누르기
+    // 댓글 좋아요 누르기
     const clickReplyLikeButton = i => {
 
-        let heart = [...reply.heart];
         let tmpReplyLiked = [...replyLiked];
-        let reply_id = reply.reply_id[i];
-        let idx = replyLiked.findIndex(id=>id===reply_id);
-        
-        if (idx === -1) {
-            heart[i] = heart[i] + 1;
-            tmpReplyLiked.push(reply_id);
-            db.collection('reply')
-            .doc(postingID)
+
+        if (replyLiked[i]) {
+            db.collection("categories")
+            .doc(categoryID)
+            .collection("posts")
+            .doc(postID)
+            .collection("replies")
+            .doc(replyID[i])
             .update({
-                heart: heart
-            })
-            db.collection('userInfo')
-            .doc(userID)
-            .update({
-                replyLiked: tmpReplyLiked
-            })
+            heart: reply[i].heart - 1})
         } else {
-            heart[i] = heart[i] - 1;
-            tmpReplyLiked.splice(idx, 1);
-            db.collection('reply')
-            .doc(postingID)
+            db.collection("categories")
+            .doc(categoryID)
+            .collection("posts")
+            .doc(postID)
+            .collection("replies")
+            .doc(replyID[i])
             .update({
-                heart: heart
-            })
-            db.collection('userInfo')
-            .doc(userID)
-            .update({
-                replyLiked: tmpReplyLiked
-            })
+            heart: reply[i].heart + 1})
         }
+
+        tmpReplyLiked[i] = !tmpReplyLiked[i];
+        setReplyLiked(tmpReplyLiked);
     }
 
 
@@ -198,102 +182,80 @@ function Reply() {
     // 댓글 수정한 거 firebase에 반영
     const editReply = (i) => {
 
-        let text = [...reply.text];
-        text[i] = replyEditContent;
-
-        db.collection('reply')
-        .doc(postingID)
+        db.collection('categories').doc(categoryID)
+        .collection("posts").doc(postID)
+        .collection("replies").doc(replyID[i])
         .update({
-            text: text
+            text: replyEditContent
         });
         cancelEditReply(i);
     }
 
 
-    // 댓글 삭제
-    const deleteReply = (i) => {
-
-        let writer = [...reply.writer];
-        let regDate = [...reply.regDate];
-        let heart = [...reply.heart];
-        let text = [...reply.text];
-        let reply_id = [...reply.reply_id];
-
-        writer.splice(i, 1);
-        regDate.splice(i, 1);
-        heart.splice(i, 1);
-        text.splice(i, 1);
-        reply_id.splice(i, 1);
-
-        db.collection('reply')
-        .doc(postingID)
-        .update({
-            reply_id: reply_id,
-            writer: writer,
-            regDate: regDate,
-            heart: heart,
-            text: text
-        });
+    // 댓글 삭제하기
+    const deleteReply = i => {
+        db.collection("categories").doc(categoryID)
+        .collection("posts").doc(postID)
+        .collection("replies").doc(replyID[i]).delete();
     }
 
 
-    // 댓글 firebase로 전송
-    const submitReply = () => {
-        
-        db.collection('reply')
-          .doc(postingID)
-          .get()
-          .then(doc => {
+      // 댓글 전송하기
+      const submitReply = () => {
 
-            let heart = [...reply.heart];
-            let regDate = [...reply.regDate];
-            let text = [...reply.text];
-            let writer = [...reply.writer];
-            let reply_id = [...reply.reply_id];
-            let today = new Date();
+        let today = new Date();
 
-            heart.push(0);
-            regDate.push(today.toLocaleDateString());
-            text.push(replyContent);
-            writer.push(userInfo.name);
-            reply_id.push(uuidv4());
-            
-            db.collection('reply')
-                .doc(postingID)
-                .set({
-                    reply_id: reply_id,
-                    heart: heart,
-                    regDate: regDate,
-                    text: text,
-                    writer: writer
-            })})
-            document.getElementById("replyContent").value = "";
-      };
+        db.collection("categories")
+        .doc(categoryID).collection("posts")
+        .doc(postID).collection("replies").add(
+            {
+                heart: 0,
+                regDate: today.toLocaleDateString(),
+                time: Date.now(),
+                text: replyContent,
+                writer: "toodury"
+            }
+        )
 
+        document.getElementById("replyContent").value = "";
+      }
+
+      
     return (
         <S.Reply>
             <S.Buttons>
                 <S.LikeButton onClick={clickLikeButton}>
                 {
-                    postLiked.find(id=>id===postingID)
+                    postLiked
                     ? "💖"
                     : "🤍"
-                } 공감 {postLikeCnt}</S.LikeButton>
-                <S.ReplyButton onClick={clickReplyArrow}>💌 {reply.text.length}   {replyArrow}</S.ReplyButton>
+                } 공감 {
+                    post
+                    ? post.heart
+                    : null
+                }</S.LikeButton>
+                <S.ReplyButton onClick={clickReplyArrow}>💌 
+                {
+                    reply
+                    ? reply.length === 0
+                    ? 0
+                    : reply.length
+                    : null
+                }   {replyArrow}</S.ReplyButton>
             </S.Buttons>
             {
                 replyArrow === "↑"
                 ?   <S.ReplyList>
                         <S.ReplyItem>
                             {
-                                reply.text.map((text, i)=>{
+                                reply.map((text, i)=>{
                                     if (isEditing[i]) {
                                         return (
                                             <>
                                             <S.Cancel onClick={()=>{cancelEditReply(i)}}>취소</S.Cancel>
                                             <S.WritingReply>
-                                                <S.WritingReplyUserName>{userInfo.name}</S.WritingReplyUserName>
-                                                <S.WritingReplyInput defaultValue={reply.text[i]} onChange={(e)=>{setReplyEditContent(e.target.value)}}></S.WritingReplyInput><br />
+                                                <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
+                                                <S.WritingReplyInput defaultValue={reply[i].text} onChange={(e)=>{setReplyEditContent(e.target.value)}}></S.WritingReplyInput><br />
                                                 <S.ReplySubmitBtn onClick={()=>{editReply(i)}}>등록</S.ReplySubmitBtn>
                                             </S.WritingReply>
                                             </>
@@ -301,29 +263,23 @@ function Reply() {
                                     } else {
                                     return(
                                         <> 
-                                            <p>{reply.writer[i]}</p>
-                                            <p dangerouslySetInnerHTML={{__html: reply.text[i]}} />
-                                            <S.ReplyDate>{reply.regDate[i]}</S.ReplyDate>
+                                            <p>{reply[i].writer}</p>
+                                            <p dangerouslySetInnerHTML={{__html: reply[i].text}} />
+                                            <S.ReplyDate>{reply[i].regDate}</S.ReplyDate>
                                             <S.ReplyAgain onClick={()=>{showReplyAgain(i)}}>답글</S.ReplyAgain>
-                                            {
-                                                userInfo.name === reply.writer[i]
-                                                ?<>
-                                                <S.ReplyDelete onClick={()=>deleteReply(i)}>삭제</S.ReplyDelete>
-                                                <S.ReplyEdit onClick={()=>{showEditReply(i)}}>수정</S.ReplyEdit>
-                                                </>
-                                                : null
-                                            }
+                                            <S.ReplyDelete onClick={()=>deleteReply(i)}>삭제</S.ReplyDelete>
+                                            <S.ReplyEdit onClick={()=>{showEditReply(i)}}>수정</S.ReplyEdit>
                                             <p><S.ReplyLikeBtn onClick={()=>clickReplyLikeButton(i)}>
                                             {
-                                                replyLiked.find(id=>id===reply.reply_id[i])
+                                                replyLiked[i]
                                                 ? "💖"
                                                 : "🤍"
                                             }
-                                            </S.ReplyLikeBtn>  {reply.heart[i]}</p>
+                                            </S.ReplyLikeBtn>  {reply[i].heart}</p>
                                             {
                                                 replyAgain[i]
                                                 ?   <S.WritingReply>
-                                                        <S.WritingReplyUserName>{userInfo.name}</S.WritingReplyUserName>
+                                                        <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
                                                         <S.WritingReplyInput placeholder="답글 쓰기"></S.WritingReplyInput><br />
                                                         <S.ReplySubmitBtn>등록</S.ReplySubmitBtn>
                                                     </S.WritingReply>
@@ -336,7 +292,7 @@ function Reply() {
                             }
                             <p>
                                 <S.WritingReply>
-                                    <S.WritingReplyUserName>{userInfo.name}</S.WritingReplyUserName>
+                                    <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
                                     <S.WritingReplyInput id="replyContent" placeholder="댓글 쓰기" onChange={(e)=>{setReplyContent(e.target.value)}}></S.WritingReplyInput><br />
                                     <S.ReplySubmitBtn onClick={submitReply}>등록</S.ReplySubmitBtn>
                                 </S.WritingReply>
