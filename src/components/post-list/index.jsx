@@ -46,6 +46,7 @@ const PostList = (props) => {
           ))
         )}
         </S.ContentContainer>
+
     </S.PostListContainer>
   );
 }
