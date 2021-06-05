@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useHistory } from 'react';
+import React, { useState, useEffect } from 'react';
+import {Switch, Route} from 'react-router-dom';
 import * as S from './styles';
 import Header from '../../components/header';
 import PostList from '../../components/post-list';
 import Footer from '../../components/footer';
 import db from '../../firebase';
+import ViewPosting from '../../page/view-posting/index';
 
 
 const Main = () => {
@@ -39,11 +41,20 @@ const Main = () => {
   }
 
   return (
-      <S.MainContainer>
-          <Header/>
-          <PostList currentCategory={category} categoryHandler={categoryHandler}/>
-          <Footer currentCategory={category} categoryHandler={categoryHandler}/>
-      </S.MainContainer>
+
+    <S.MainContainer>
+        <Header/>
+        <Switch>
+          <Route path="/post">
+            <ViewPosting/>
+          </Route>
+          <Route path="/">
+            <PostList currentCategory={category} categoryHandler={categoryHandler}/>
+          </Route>
+        </Switch>
+        <Footer currentCategory={category} categoryHandler={categoryHandler}/>
+    </S.MainContainer>
+
   );
 };
 
