@@ -9,25 +9,17 @@ const Footer = (props) => {
     const [weather, setWeather] = useState({temperature: 0, name: "", icon: ""})
     const [today, setToday] = useState(0);
     const [total, setTotal] = useState(0);
-
     const [categoryList, setCategoryList] = useState([]);
     const [user, setUser] = useState([]);
-    const [curCategory, setCurrentCategory] = useState(props.currentCategory);
-    const [cnt, setCounter] = useState(1);
 
     useEffect(()=>{
         setToday(today + 1);
         setTotal(total + 1);
-        getCurrentCategory();
         getCategoryList();
         getUser();
     }, []);
 
-    const getCurrentCategory = async () => {
-        setCurrentCategory('6aClaivRA34P8pp2WRIV');
-    }
-
-    const getCategoryList = async () => {
+    const getCategoryList = () => {
         db.collection('categories')
         .get()
         .then((querySnapshot) => {
@@ -35,7 +27,6 @@ const Footer = (props) => {
             querySnapshot.forEach((doc) => {
                 const tmp = doc.data();
                 array.push({categoryName: tmp.name, categoryId: doc.id});
-                setCounter(cnt + 1);
             });
             setCategoryList(array);
         })
@@ -48,7 +39,7 @@ const Footer = (props) => {
         props.categoryHandler(categoryId);
     }
 
-    const getUser = async () => {
+    const getUser = () => {
         db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65')
         .get()
         .then((doc) => {
@@ -70,7 +61,6 @@ const Footer = (props) => {
 
 
     const getPosition = () => {
-
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition((position)=>{
                 setLoc({
@@ -79,7 +69,6 @@ const Footer = (props) => {
                 });
             })
         }
-
         getWeather();
     }
 

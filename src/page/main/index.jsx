@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {Switch, Route} from 'react-router-dom';
+import {Switch, Route, useHistory} from 'react-router-dom';
 import * as S from './styles';
 import Header from '../../components/header';
 import PostList from '../../components/post-list';
@@ -9,11 +9,16 @@ import ViewPosting from '../../page/view-posting/index';
 
 
 const Main = () => {
-  const [category, setCategory] = useState();
+  const [defCategory, setDefCategory] = useState();
+  const [curCategory, setCurCategory] = useState(defCategory);
   let history = useHistory();
   useEffect(()=> {
     getDefCategory();
-  }, []);
+  });
+
+  useEffect(()=> {
+    
+  });
 
   const getDefCategory = () => {
     db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65')
@@ -21,7 +26,8 @@ const Main = () => {
     .then((doc) => {
         if (doc.exists) {
             const tmp = doc.data();
-            setCategory(tmp.defCategory);
+            setDefCategory(tmp.defCategory);
+            //setCurCategory(tmp.defCategory);
         }
         else {
             console.log("No such document!");
@@ -32,12 +38,15 @@ const Main = () => {
   }
 
   const categoryHandler = (nextCategory) => {
-    //setCategory(nextCategory);
+    setCurCategory(nextCategory);
+    /*
     db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65').update({defCategory: nextCategory})
     .then(() => {
-      history.replace('/'); // 라우터 돔 활용만 해주면 될듯
+      setCurCategory(nextCategory);
+      //history.replace('/'); // 라우터 돔 활용만 해주면 될듯
       console.log("Document successfully updated!");
     });
+    */
   }
 
   return (
@@ -49,10 +58,10 @@ const Main = () => {
             <ViewPosting/>
           </Route>
           <Route path="/">
-            <PostList currentCategory={category} categoryHandler={categoryHandler}/>
+            <PostList currentCategory={curCategory} categoryHandler={categoryHandler}/>
           </Route>
         </Switch>
-        <Footer currentCategory={category} categoryHandler={categoryHandler}/>
+        <Footer currentCategory={curCategory} categoryHandler={categoryHandler}/>
     </S.MainContainer>
 
   );
