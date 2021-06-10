@@ -2,7 +2,7 @@
 
 import React, {useState, useEffect} from 'react';
 import firebase from 'firebase';
-import db from '../../Firebase.js';
+import db from '../../firebase.js';
 import * as S from './styles.js';
 
 function Reply() {
@@ -16,6 +16,8 @@ function Reply() {
     let [reReplyContent, setReReplyContent] = useState(""); // 답글 내용
     let [replyEditContent, setReplyEditContent] = useState(""); // 댓글 수정 내용 저장
     let [isEditing, setIsEditing] = useState([false]);  // 댓글을 수정 중인지 여부 저장
+    let [replyNickName, setReplyNickName] = useState();
+    let [replyPassword, setReplyPassword] = useState();
 
     // props로 주어지는 데이터
     let [categoryID, setCategoryID] = useState();
@@ -37,7 +39,7 @@ function Reply() {
 
 
     // 글 정보, 댓글 싹 다 가져오기
-    useEffect(()=>{
+    const getReplies = () => {
 
         if (categoryID !== undefined && postID !== undefined) {
             db.collection("categories").doc(categoryID)
@@ -59,13 +61,16 @@ function Reply() {
             postRef.onSnapshot((doc)=>{
                 setPost(doc.data());
             }); // 글 정보 가져오기
-        }  
+        }
+    }
+    useEffect(()=>{
+        getReplies();
     }, [categoryID, postID])
     
 
     // 댓글 개수를 바탕으로 필요한 상태들 초기화
-    useEffect(()=>{
-        
+
+    const initialize = () => {
         let tmpShowReReply = [...showReReply];
         let tmpIsEditing = [...isEditing];
         let tmpReplyLiked = [...replyLiked];
@@ -86,11 +91,14 @@ function Reply() {
             setIsEditing(tmpIsEditing);
             setReplyLiked(tmpReplyLiked);
         }
+    }
+    useEffect(()=>{
+        initialize();
     }, [reply])
 
 
     // 답글 가져오기
-    useEffect(()=>{
+    const getReReplies = () => {
 
         if (reply) {
 
@@ -104,6 +112,9 @@ function Reply() {
             }
             setReReplies(tmpReReplies);
         }
+    }
+    useEffect(()=>{
+        getReReplies();
     }, [reply])
 
 
@@ -214,9 +225,16 @@ function Reply() {
 
     // 댓글 삭제하기
     const deleteReply = i => {
+
+        let password = prompt("삭제하시려면 비밀번호를 입력하세요");
+        if (password === reply[i].password) {
+        
         db.collection("categories").doc(categoryID)
         .collection("posts").doc(postID)
         .collection("replies").doc(replyID[i]).delete();
+        } else {
+            alert("비밀번호가 틀렸습니다");
+        }
     }
 
 
@@ -225,21 +243,27 @@ function Reply() {
 
         let today = new Date();
 
-        db.collection("categories")
-        .doc(categoryID).collection("posts")
-        .doc(postID).collection("replies").add(
-            {
-                heart: 0,
-                regDate: today.toLocaleDateString(),
-                time: Date.now(),
-                text: replyContent,
-                writer: "toodury",
-                reReplies: [],
-                reRepliesCnt: 0
-            }
-        )
-
-        document.getElementById("replyContent").value = "";
+        if (!replyNickName || !replyPassword) {
+            alert("닉네임, 비밀번호를 입력해주세요");
+        } else {
+            db.collection("categories")
+            .doc(categoryID).collection("posts")
+            .doc(postID).collection("replies").add(
+                {
+                    heart: 0,
+                    regDate: today.toLocaleDateString(),
+                    time: Date.now(),
+                    text: replyContent,
+                    reReplies: [],
+                    reRepliesCnt: 0,
+                    nickName: replyNickName,
+                    password: replyPassword
+                }
+            )
+            document.getElementById("replyContent").value = "";
+            document.getElementById("replyNickName").value = "";
+            document.getElementById("replyPassword").value = "";
+        }
       }
 
     
@@ -323,7 +347,7 @@ function Reply() {
                                             <>
                                             <S.Cancel onClick={()=>{cancelEditReply(i)}}>취소</S.Cancel>
                                             <S.WritingReply>
-                                                <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
+                                                <S.WritingReplyUserName>{reply[i].nickName}</S.WritingReplyUserName>
                                                 <S.WritingReplyInput defaultValue={reply[i].text} onChange={(e)=>{setReplyEditContent(e.target.value)}}></S.WritingReplyInput><br />
                                                 <S.ReplySubmitBtn onClick={()=>{editReply(i)}}>등록</S.ReplySubmitBtn>
                                             </S.WritingReply>
@@ -332,7 +356,7 @@ function Reply() {
                                     } else {
                                     return(
                                         <> 
-                                            <p>{reply[i].writer}</p>
+                                            <p>{reply[i].nickName}</p>
                                             <p dangerouslySetInnerHTML={{__html: reply[i].text}} />
                                             <S.ReplyDate>{reply[i].regDate}</S.ReplyDate>
                                             <S.ReplyAgain onClick={()=>{clickReReply(i)}}>답글</S.ReplyAgain>
@@ -362,7 +386,6 @@ function Reply() {
                                             {
                                                 showReReply[i]
                                                 ?   <S.WritingReply>
-                                                        <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
                                                         <S.WritingReplyInput id="reReplyContent" placeholder="답글 쓰기" onChange={(e)=>{setReReplyContent(e.target.value)}}></S.WritingReplyInput><br />
                                                         <S.ReplySubmitBtn onClick={()=>submitReReply(i)}>등록</S.ReplySubmitBtn>
                                                     </S.WritingReply>
@@ -375,7 +398,8 @@ function Reply() {
                             }
                             <p>
                                 <S.WritingReply>
-                                    <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
+                                    <S.WritingReplyNickName type="text" id="replyNickName" placeholder="닉네임" onChange={(e)=>{setReplyNickName(e.target.value)}}></S.WritingReplyNickName>
+                                    <S.WritingReplyPassword type="password" id="replyPassword" placeholder="비밀번호" onChange={(e)=>{setReplyPassword(e.target.value)}}></S.WritingReplyPassword>
                                     <S.WritingReplyInput id="replyContent" placeholder="댓글 쓰기" onChange={(e)=>{setReplyContent(e.target.value)}}></S.WritingReplyInput><br/>
                                     <S.ReplySubmitBtn onClick={submitReply}>등록</S.ReplySubmitBtn>
                                 </S.WritingReply>
