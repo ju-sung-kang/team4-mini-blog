@@ -11,19 +11,21 @@ function Reply() {
     let [postLiked, setPostLiked] = useState(false); // 글 좋아요 눌렀는지 여부
     let [replyLiked, setReplyLiked] = useState([false]);   // 댓글 좋아요 눌렀는지 여부
     let [replyArrow, setReplyArrow] = useState("↓");    // 댓글 버튼 화살표
-    let [replyAgain, setReplyAgain] = useState([false]); // 대댓글 쓰기 눌렀는지 여부
+    let [showReReply, setShowReReply] = useState([false]); // 대댓글 쓰기 눌렀는지 여부
     let [replyContent, setReplyContent] = useState(""); // 댓글 내용
+    let [reReplyContent, setReReplyContent] = useState(""); // 답글 내용
     let [replyEditContent, setReplyEditContent] = useState(""); // 댓글 수정 내용 저장
-    let [isEditing, setIsEditing] = useState([false]);  // 댓글을 수정 중인지
+    let [isEditing, setIsEditing] = useState([false]);  // 댓글을 수정 중인지 여부 저장
 
     // props로 주어지는 데이터
     let [categoryID, setCategoryID] = useState();
     let [postID, setPostID] = useState();
     
     // 정보 설정
-    let [post, setPost] = useState();
-    let [reply, setReply] = useState();
-    let [replyID, setReplyID] = useState();
+    let [post, setPost] = useState();   // 글 정보
+    let [reply, setReply] = useState(); // 댓글 정보
+    let [replyID, setReplyID] = useState(); // 댓글 아이디
+    let [reReplies, setReReplies] = useState(); // 답글 정보(이중 배열)
     
 
     // 유저 아이디, 글 아이디 설정
@@ -64,14 +66,14 @@ function Reply() {
     // 댓글 개수를 바탕으로 필요한 상태들 초기화
     useEffect(()=>{
         
-        let tmpReplyAgain = [...replyAgain];
+        let tmpShowReReply = [...showReReply];
         let tmpIsEditing = [...isEditing];
         let tmpReplyLiked = [...replyLiked];
 
         if (reply !== undefined) {            
             for (let i = 0; i < reply.length; i++) {
-                if (tmpReplyAgain[i] === undefined) {
-                    tmpReplyAgain[i] = false;
+                if (tmpShowReReply[i] === undefined) {
+                    tmpShowReReply[i] = false;
                 }
                 if (tmpIsEditing[i] === undefined) {
                     tmpIsEditing[i] = false;
@@ -80,9 +82,27 @@ function Reply() {
                     tmpReplyLiked[i] = false;
                 }
             }
-            setReplyAgain(tmpReplyAgain);
+            setShowReReply(tmpShowReReply);
             setIsEditing(tmpIsEditing);
             setReplyLiked(tmpReplyLiked);
+        }
+    }, [reply])
+
+
+    // 답글 가져오기
+    useEffect(()=>{
+
+        if (reply) {
+
+            let tmpReReplies = [];
+            for (let i = 0; i < reply.length; i++) {
+                if (reply[i].reRepliesCnt > 0) {
+                    tmpReReplies.push(reply[i].reReplies);
+                } else {
+                    tmpReReplies.push([]);
+                }
+            }
+            setReReplies(tmpReReplies);
         }
     }, [reply])
 
@@ -122,12 +142,12 @@ function Reply() {
     }
 
 
-    // 대댓글 쓰는 창 보여주기
-    const showReplyAgain = i => {
+    // 답글 쓰는 창 보여주기
+    const clickReReply = i => {
 
-        let tmp = [...replyAgain];
+        let tmp = [...showReReply];
         tmp[i] = !tmp[i];
-        setReplyAgain(tmp);
+        setShowReReply(tmp);
     }
 
 
@@ -213,12 +233,61 @@ function Reply() {
                 regDate: today.toLocaleDateString(),
                 time: Date.now(),
                 text: replyContent,
-                writer: "toodury"
+                writer: "toodury",
+                reReplies: [],
+                reRepliesCnt: 0
             }
         )
 
         document.getElementById("replyContent").value = "";
       }
+
+    
+    // 답글 전송
+    const submitReReply = i => {
+
+        if (reReplies[i]) {
+            var tmpReReplies = [...reReplies[i]];
+            tmpReReplies.push(reReplyContent);
+        } else{
+            var tmpReReplies = [reReplyContent];
+        }
+
+        db.collection("categories")
+        .doc(categoryID).collection("posts")
+        .doc(postID).collection("replies")
+        .doc(replyID[i]).update(
+            {
+                reReplies : tmpReReplies,
+                reRepliesCnt : reply[i].reRepliesCnt + 1
+            }
+        ) 
+
+        document.getElementById("reReplyContent").value = "";
+
+        let tmpShowReReply = [...showReReply];
+        tmpShowReReply[i] = !tmpShowReReply[i];
+        setShowReReply(tmpShowReReply);
+    }
+
+
+    // 답글 삭제
+    const deleteReReply = (i, j) => {
+
+        let tmpReReplies = [...reReplies[i]];
+        tmpReReplies.splice(j, 1);
+
+        
+        db.collection("categories")
+        .doc(categoryID).collection("posts")
+        .doc(postID).collection("replies")
+        .doc(replyID[i]).update(
+            {
+                reReplies : tmpReReplies,
+                reRepliesCnt : reply[i].reRepliesCnt - 1
+            }
+        ) 
+    }
 
       
     return (
@@ -266,7 +335,7 @@ function Reply() {
                                             <p>{reply[i].writer}</p>
                                             <p dangerouslySetInnerHTML={{__html: reply[i].text}} />
                                             <S.ReplyDate>{reply[i].regDate}</S.ReplyDate>
-                                            <S.ReplyAgain onClick={()=>{showReplyAgain(i)}}>답글</S.ReplyAgain>
+                                            <S.ReplyAgain onClick={()=>{clickReReply(i)}}>답글</S.ReplyAgain>
                                             <S.ReplyDelete onClick={()=>deleteReply(i)}>삭제</S.ReplyDelete>
                                             <S.ReplyEdit onClick={()=>{showEditReply(i)}}>수정</S.ReplyEdit>
                                             <p><S.ReplyLikeBtn onClick={()=>clickReplyLikeButton(i)}>
@@ -277,11 +346,25 @@ function Reply() {
                                             }
                                             </S.ReplyLikeBtn>  {reply[i].heart}</p>
                                             {
-                                                replyAgain[i]
+                                                reply[i].reReplies
+                                                ? <>{
+                                                    reply[i].reReplies.map((reReply, j)=>{
+                                                        return (
+                                                            <S.ReReply>
+                                                                ➡{reReply}
+                                                                <S.ReplyDelete onClick={()=>deleteReReply(i, j)}>삭제</S.ReplyDelete>
+                                                            </S.ReReply>
+                                                        )
+                                                    })
+                                                }</>
+                                                : null
+                                            }
+                                            {
+                                                showReReply[i]
                                                 ?   <S.WritingReply>
                                                         <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
-                                                        <S.WritingReplyInput placeholder="답글 쓰기"></S.WritingReplyInput><br />
-                                                        <S.ReplySubmitBtn>등록</S.ReplySubmitBtn>
+                                                        <S.WritingReplyInput id="reReplyContent" placeholder="답글 쓰기" onChange={(e)=>{setReReplyContent(e.target.value)}}></S.WritingReplyInput><br />
+                                                        <S.ReplySubmitBtn onClick={()=>submitReReply(i)}>등록</S.ReplySubmitBtn>
                                                     </S.WritingReply>
                                                 : null
                                             }
@@ -293,7 +376,7 @@ function Reply() {
                             <p>
                                 <S.WritingReply>
                                     <S.WritingReplyUserName>작성자 이름</S.WritingReplyUserName>
-                                    <S.WritingReplyInput id="replyContent" placeholder="댓글 쓰기" onChange={(e)=>{setReplyContent(e.target.value)}}></S.WritingReplyInput><br />
+                                    <S.WritingReplyInput id="replyContent" placeholder="댓글 쓰기" onChange={(e)=>{setReplyContent(e.target.value)}}></S.WritingReplyInput><br/>
                                     <S.ReplySubmitBtn onClick={submitReply}>등록</S.ReplySubmitBtn>
                                 </S.WritingReply>
                             </p>

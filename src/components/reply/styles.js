@@ -111,3 +111,6 @@ export const ReplySubmitBtn = styled.button`
     bottom: 10px;  
 `;
 
+export const ReReply = styled.div`
+    margin-left: 30px;
+`;
