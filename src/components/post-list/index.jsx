@@ -6,10 +6,24 @@ import * as S from './styles';
 
 const PostList = (props) => {
   const history = useHistory();
-  const [postList, setPostList] = useState([{title:'add', postId: "default"}]);
+  const [postList, setPostList] = useState([{title:'로딩중', postId: "default"}]);
+  const [categoryName, setCategoryName] = useState();
   useEffect(() => {
+    getCategoryName();
     getPostList();
   });
+
+  const getCategoryName = () => {
+    db.collection('categories').doc(props.currentCategory)
+    .get()
+    .then((doc) => {
+      const name = doc.data().name;
+      setCategoryName(name);
+    })
+    .catch((error) => {
+      console.log("Error getting documents: ", error);
+    })
+  };
 
   const getPostList = () => {
     db.collection('categories').doc(props.currentCategory).collection('posts')
@@ -32,13 +46,21 @@ const PostList = (props) => {
     console.log("clicked");
     history.push({
       pathname: '/post',
-      search: `?categoryId=rkPeoyYAgGPXWEChvB6W&postId=${e.target.id}`,
+      search: `?categoryId=${props.currentCategory}&postId=${e.target.id}`,
     });
+  }
+
+  const postWrite = (e) => {
+    e.preventDefault();
+    history.push({
+      pathname: '/write-posting',
+      search: `?categoryId=${props.currentCategory}`,
+    })
   }
 
   return (
     <S.PostListContainer>
-      <S.PostListTitle>개발 일지</S.PostListTitle>
+      <S.PostListTitle>{categoryName}</S.PostListTitle>
         <S.ContentContainer>
         {postList.length === 0 ? (
             <S.NoPost>쓰인 글이 없습니다!</S.NoPost>
@@ -52,6 +74,7 @@ const PostList = (props) => {
             >{post.title}</S.PostContainer>
           ))
         )}
+        <S.PostAdd onClick={postWrite}>새글 작성</S.PostAdd>
         </S.ContentContainer>
 
     </S.PostListContainer>
