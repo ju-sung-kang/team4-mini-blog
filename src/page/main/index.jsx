@@ -9,12 +9,12 @@ import ViewPosting from '../../page/view-posting/index';
 
 
 const Main = () => {
-
   const [defCategory, setDefCategory] = useState();
   const [curCategory, setCurCategory] = useState(defCategory);
   let history = useHistory();
   useEffect(()=> {
     getDefCategory();
+    console.log("tttttt");
   });
 
   const getDefCategory = () => {
