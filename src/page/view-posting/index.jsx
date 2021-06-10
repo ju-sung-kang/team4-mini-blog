@@ -11,7 +11,6 @@ function ViewPosting() {
     const { postId } = queryString.parse(search);
     const [ category, setCategory ] = useState("");
     const [ post, setPost] = useState({title : "가져오는 중입니다", text : "가져오는 중입니다", regDate : "가져오는 중입니다" });
-    const [ heartOn, setHeartOn ] = useState(false);
 
     useEffect(() => {
         console.log(categoryId);
@@ -38,24 +37,7 @@ function ViewPosting() {
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
-
-        // var docRef = db.collection("posting").doc("u649YBQQpqOBnc449yN6");
-        // docRef.onSnapshot((doc) => {
-        //     setPosting(doc.data());
-        // });
     }, [])
-
-    // const updateHeart = (e) => {
-    //     e.preventDefault();
-    //     var postRef = db.collection('posting').doc("u649YBQQpqOBnc449yN6");
-    //     postRef.update({
-    //         heart: firebase.firestore.FieldValue.increment(heartOn ? -1 : 1)
-    //     }).then(() => {
-    //         setHeartOn(!heartOn)
-    //     }).catch((error) => {
-    //         console.log("공감 오류가 발생했습니다");
-    //     });
-    // }
 
     return (
         <S.PostingContainer>
@@ -63,15 +45,12 @@ function ViewPosting() {
                 <S.PostingCategory>{category}</S.PostingCategory>
                 <S.PostingTitle>{post.title}</S.PostingTitle>
                 <div>
-                    {/* <S.PostingWriter>{post.writer}</S.PostingWriter> */}
                     <S.PostingDate>{post.regDate}</S.PostingDate>
                 </div>
 
             </S.PostingHeader>
             <S.PostingBody>
                 <p>{ post.text } </p>
-                {/* <S.PostingHeart onClick={updateHeart}>공감{posting.heart}</S.PostingHeart>
-                <S.PostingReply>댓글{posting.reply}</S.PostingReply> */}
             </S.PostingBody>
             
         </S.PostingContainer>

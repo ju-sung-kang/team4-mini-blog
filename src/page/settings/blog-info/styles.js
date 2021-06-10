@@ -78,7 +78,7 @@ export const BlogInfoTextarea = styled.textarea`
     border: 1px solid #ccc;    
 `;
 
-export const BlogTopicSelect = styled.select`
+export const BlogMainCategorySelect = styled.select`
     margin-top: 30px;
     margin-bottom: 30px;
     width : 300px;
