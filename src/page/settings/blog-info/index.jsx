@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import * as S from './styles';
 import db from '../../../firebase';
 
 function SettingsBlogInfo() {
 
-    //const formRef = useRef();
-    const [blogInfo, setBlogInfo] = useState({blogName : "", nickname: "", profileUrl : "", mainCategory: ""})
+    const [blogInfo, setBlogInfo] = useState({blogName : "", nickName: "", profileImageUrl : "", defCategory: "", bannerImageUrl: ""})
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -27,8 +27,6 @@ function SettingsBlogInfo() {
 
     const saveInfo = (e) => {
         e.preventDefault();
-        console.log(blogInfo);
-        // const current = formRef.current
         db.collection('blogInfo').doc('info').update(blogInfo).then(() => {
             alert("수정이 성공적으로 완료되었습니다.");
         }).catch((error) => {
@@ -36,25 +34,21 @@ function SettingsBlogInfo() {
         });
     }
 
+
     return (
         <S.BlogInfoContainer>
+            <Link to="/">메인</Link>
             <S.BlogInfoTitle>🖍블로그 정보</S.BlogInfoTitle>
             <S.BlogInfoTable>
                 <S.BlogInfoTableBody>
-                    <S.BlogInfoRow>
-                        <S.BlogInfoRowHeader>블로그 주소</S.BlogInfoRowHeader>
-                        <S.BlogInfoRowData>
-                            <S.BlogUrl>blog url</S.BlogUrl>
-                        </S.BlogInfoRowData>
-                    </S.BlogInfoRow>
                     <S.BlogInfoRow>
                         <S.BlogInfoRowHeader>블로그명</S.BlogInfoRowHeader>
                         <S.BlogInfoRowData>
                             <S.BlogInfoInput 
                                 type="text" 
-                                name="name" 
-                                value={blogInfo.name} 
-                                onChange={e => setBlogInfo({...blogInfo, name : e.target.value})} />
+                                name="blogName" 
+                                value={blogInfo.blogName} 
+                                onChange={e => setBlogInfo({...blogInfo, blogName : e.target.value})} />
                             <S.InputDesc>한글, 영문, 숫자 혼용가능(한글 기준 25자 이내)</S.InputDesc>
                         </S.BlogInfoRowData>
                     </S.BlogInfoRow>
@@ -62,9 +56,9 @@ function SettingsBlogInfo() {
                         <S.BlogInfoRowHeader>별명</S.BlogInfoRowHeader>
                         <S.BlogInfoRowData>
                             <S.BlogInfoInput
-                                name="nickname"
-                                value={blogInfo.nickname}
-                                onChange={e => setBlogInfo({...blogInfo, nickname : e.target.value})} />
+                                name="nickName"
+                                value={blogInfo.nickName}
+                                onChange={e => setBlogInfo({...blogInfo, nickName : e.target.value})} />
                             <S.InputDesc>한글, 영문, 숫자 혼용가능(한글 기준 10자 이내)</S.InputDesc>
                         </S.BlogInfoRowData>
                     </S.BlogInfoRow>
@@ -83,10 +77,9 @@ function SettingsBlogInfo() {
                         <S.BlogInfoRowHeader>메인 카테고리</S.BlogInfoRowHeader>
                         <S.BlogInfoRowData>
                             <S.BlogMainCategorySelect 
-                            name="mainCategory" 
-                            value={blogInfo.mainCategory} 
-                            onChange={e => setBlogInfo({...blogInfo, mainCategory : e.target.value})}>
-                                <option value="">기본으로 노출될 카테고리를 선택해주세요.</option>
+                            name="defCategory" 
+                            value={blogInfo.defCategory} 
+                            onChange={e => setBlogInfo({...blogInfo, defCategory : e.target.value})}>
                                 {categories.map((category) => <option value={category.id}>{category.name}</option>)}
                             </S.BlogMainCategorySelect>
                             <S.InputDesc>
@@ -99,7 +92,13 @@ function SettingsBlogInfo() {
                     <S.BlogInfoRow>
                         <S.BlogInfoRowHeader>블로그 프로필 이미지</S.BlogInfoRowHeader>
                         <S.BlogInfoRowData>
-                        <S.BlogInfoInput name="profileUrl" value={blogInfo.profileUrl} onChange={e => setBlogInfo({...blogInfo, profileUrl : e.target.value})} />
+                        <S.BlogInfoInput name="profileImageUrl" value={blogInfo.profileImageUrl} onChange={e => setBlogInfo({...blogInfo, profileImageUrl : e.target.value})} />
+                        </S.BlogInfoRowData>
+                    </S.BlogInfoRow>
+                    <S.BlogInfoRow>
+                        <S.BlogInfoRowHeader>블로그 배너 이미지</S.BlogInfoRowHeader>
+                        <S.BlogInfoRowData>
+                        <S.BlogInfoInput name="bannerImageUrl" value={blogInfo.bannerImageUrl} onChange={e => setBlogInfo({...blogInfo, bannerImageUrl : e.target.value})} />
                         </S.BlogInfoRowData>
                     </S.BlogInfoRow>
                 </S.BlogInfoTableBody>
