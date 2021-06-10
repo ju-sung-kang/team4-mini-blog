@@ -9,9 +9,9 @@ function ViewPosting() {
     const { search } = useLocation();
     const { categoryId } = queryString.parse(search);
     const { postId } = queryString.parse(search);
-    const { category, setCategory} = useState("");
-    const [ post, setPost] = useState({title : "", text : "", regDate : "0000-00-00" });
-    const [heartOn, setHeartOn] = useState(false);
+    const [ category, setCategory ] = useState("");
+    const [ post, setPost] = useState({title : "가져오는 중입니다", text : "가져오는 중입니다", regDate : "가져오는 중입니다" });
+    const [ heartOn, setHeartOn ] = useState(false);
 
     useEffect(() => {
         console.log(categoryId);
@@ -24,7 +24,7 @@ function ViewPosting() {
         categoryRef
         .get()
         .then((doc) => {
-            doc.exists && setCategory(doc.name);
+            doc.exists && setCategory(doc.data().name);
         }).catch((error) => {
             console.log("Error getting document:", error);
         })

@@ -3,6 +3,7 @@ import {BrowserRouter,Switch, Route} from  'react-router-dom';
 import Main from './page/main/index';
 import SettingsCategory from './page/settings/category/index';
 import ViewPosting from './page/view-posting/index';
+import WritePosting from './page/write-posting';
 
 function App() {
   return (
@@ -13,6 +14,9 @@ function App() {
         </Route>
         <Route exact path="/settings/category">    
           <SettingsCategory />
+        </Route>
+        <Route exact path="/write-posting">
+          <WritePosting/>
         </Route>
         {/* <Route path="/post">
           <ViewPosting />

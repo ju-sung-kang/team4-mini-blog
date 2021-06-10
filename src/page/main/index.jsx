@@ -9,6 +9,7 @@ import ViewPosting from '../../page/view-posting/index';
 
 
 const Main = () => {
+
   const [defCategory, setDefCategory] = useState();
   const [curCategory, setCurCategory] = useState(defCategory);
   let history = useHistory();
@@ -16,22 +17,12 @@ const Main = () => {
     getDefCategory();
   });
 
-  useEffect(()=> {
-    
-  });
-
   const getDefCategory = () => {
     db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65')
     .get()
     .then((doc) => {
-        if (doc.exists) {
-            const tmp = doc.data();
-            setDefCategory(tmp.defCategory);
-            //setCurCategory(tmp.defCategory);
-        }
-        else {
-            console.log("No such document!");
-        }
+          const tmp = doc.data();
+          setDefCategory(tmp.defCategory);
     }).catch((error) => {
         console.log("Error getting document:", error);
     });
@@ -39,14 +30,7 @@ const Main = () => {
 
   const categoryHandler = (nextCategory) => {
     setCurCategory(nextCategory);
-    /*
-    db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65').update({defCategory: nextCategory})
-    .then(() => {
-      setCurCategory(nextCategory);
-      //history.replace('/'); // 라우터 돔 활용만 해주면 될듯
-      console.log("Document successfully updated!");
-    });
-    */
+    history.push('/');
   }
 
   return (

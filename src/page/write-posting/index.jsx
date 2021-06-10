@@ -1,21 +1,38 @@
 import React, { useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import db from '../../firebase';
 import * as S from './styles';
 
 const WritePosting = () => {
+    const { search } = useLocation();
+    const { categoryId } = queryString.parse(search);
     const [title, setTitle] = useState("test title");
     const [text, setText] = useState("test text");
+    const [curCategory, setCurcategory] = useState("6aClaivRA34P8pp2WRIV");
+    const history = useHistory();
 
     const submit = () => {
-        console.log("yesese")
-        db.collection("posts").doc("newdoc").set({ // 현재 초기값으로 들어감, 수정요망
-            id:10, text:text, title:title
+        db.collection("categories").doc(categoryId).collection('posts')
+        .add({
+            text:text, 
+            title:title
         },{merge:true}).then(()=>{
             alert("작성 완료");
+            history.push('/');
         }).catch((error) => {
             console.error("Error writing document: ", error);
         });
     }
+
+    const onTitleChange = (e) => {
+        setTitle(e.target.value);
+    }
+
+    const onTextChange = (e) => {
+        setText(e.target.value);
+    }
+
 
 
     return (
@@ -32,7 +49,7 @@ const WritePosting = () => {
                     <option value="기타">맛집</option>
                  </S.WritePostingCategory>
                  <S.InfoContainerTitleLabel>제목:</S.InfoContainerTitleLabel>
-                 <S.WritePostingTitle placeholder="제목을 입력해주세요" id="title-input"/>
+                 <S.WritePostingTitle placeholder="제목을 입력해주세요" onChange={onTitleChange}/>
                  <S.FileAdd>📂 파일</S.FileAdd>
              </S.WritePostingInfoContainer>
              <S.StyleMenuContainer>
@@ -56,7 +73,7 @@ const WritePosting = () => {
                  </S.LetterLayout>
              </S.StyleMenuContainer>
              <S.WriteRegionContainer>
-                 <S.WriteRegion placeholder="내용을 입력해주세요" id="content-input"/>
+                 <S.WriteRegion placeholder="내용을 입력해주세요" onChange={onTextChange}/>
              </S.WriteRegionContainer>
         </S.WritePostingContainer>
     );
