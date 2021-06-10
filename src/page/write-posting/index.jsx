@@ -8,7 +8,7 @@ const WritePosting = () => {
                  <S.Logo>blog</S.Logo>
                  <S.PostingWriteButton>발행</S.PostingWriteButton>
              </S.WritePostingHeader>
-             <S.WritePostingInfoContainer>
+             <S.WritePostingInfoContainer> 
                  <S.WritePostingCategory>
                     <option value="">카테고리</option>
                     <option value="학생">게임</option>
