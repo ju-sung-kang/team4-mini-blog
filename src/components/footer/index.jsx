@@ -16,6 +16,7 @@ const Footer = (props) => {
         setToday(today + 1);
         setTotal(total + 1);
         getCategoryList();
+        getPosition();
         getUser();
     }, []);
 
@@ -76,11 +77,11 @@ const Footer = (props) => {
         fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${loc.lat}&lon=${loc.long}&APPID=${API_KEY}`)
         .then(response => response.json())
         .then(json => {
-        setWeather({
-            temperature: Math.floor(json.main.temp - 273.15),
-            name: json.weather[0].main,
-            icon: json.weather[0].icon
-        });
+            setWeather({
+                temperature: Math.floor(json.main.temp - 273.15),
+                name: json.weather[0].main,
+                icon: json.weather[0].icon
+            });
         });
     }
 
