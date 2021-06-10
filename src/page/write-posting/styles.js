@@ -24,6 +24,11 @@ export const PostingWriteButton = styled.div`
     background-color: #2DB400;
     font-weight: 600;
     font-size: 1.2rem;
+    &: hover {
+        background-color: #008000;
+    }
+    border-radius: 0.5rem;
+    cursor: pointer;
 `;
 
 export const Logo = styled.div`
@@ -114,7 +119,7 @@ export const WriteRegionContainer = styled.div`
     justify-content: center;
 `;
 
-export const WriteRegion = styled.input`
+export const WriteRegion = styled.textarea`
     width: 50%;
     height: 50rem;
 `;
