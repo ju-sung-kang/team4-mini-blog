@@ -4,7 +4,7 @@ import Main from './page/main/index';
 import SettingsCategory from './page/settings/category/index';
 import ViewPosting from './page/view-posting/index';
 import WritePosting from './page/write-posting';
-import SettingsBlogInfo from './page/settings/blog-info/index'
+import SettingsBlogInfo from './page/settings/blog-info/index';
 
 function App() {
   return (
@@ -24,7 +24,7 @@ function App() {
         </Route>
       </Switch>
     </BrowserRouter>
-  );
+  )
 }
 
 export default App;

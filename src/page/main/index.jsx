@@ -14,8 +14,7 @@ const Main = () => {
   let history = useHistory();
   useEffect(()=> {
     getDefCategory();
-    console.log("tttttt");
-  });
+  }, []);
 
   const getDefCategory = () => {
     db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65')

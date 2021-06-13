@@ -95,8 +95,19 @@ export const WritingReply = styled.div`
 `;
 
 export const WritingReplyUserName = styled.p`
+    margin-left: 20px;
     text-align: left;
-    margin-left: 10px;
+`;
+
+export const WritingReplyNickName = styled.input`
+    display: inline-block;
+    margin: 10px;
+`;
+
+export const WritingReplyPassword = styled.input`
+    display: inline-block;
+    text-align: left;
+    margin: 10px;
 `;
 
 export const WritingReplyInput = styled.textarea`
@@ -111,3 +122,6 @@ export const ReplySubmitBtn = styled.button`
     bottom: 10px;  
 `;
 
+export const ReReply = styled.div`
+    margin-left: 30px;
+`;
