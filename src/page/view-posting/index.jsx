@@ -24,10 +24,6 @@ function ViewPosting() {
         .get()
         .then((doc) => {
             doc.exists && setCategory(doc.name);
-<<<<<<< HEAD
-=======
-            doc.exists && setCategory(doc.data().name);
->>>>>>> 60d54a7d82b381ab295a37a9c7462d0b5a2168ea
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
