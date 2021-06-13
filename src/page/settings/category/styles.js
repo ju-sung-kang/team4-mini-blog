@@ -13,6 +13,18 @@ export const CategorySettingsContainer = styled.div`
 export const Title = styled.h2`
 `;
 
+export const Subtitle = styled.h3`
+`;
+
+export const BlogMainCategorySelect = styled.select`
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width : 300px;
+    height : 40px;
+    padding : 0px;
+    border: 1px solid #ccc;    
+`;
+
 export const CategorySettingsInnerBox = styled.div`
     margin: 10px;
     // background-color: green;

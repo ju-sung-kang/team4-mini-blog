@@ -23,7 +23,7 @@ function ViewPosting() {
         categoryRef
         .get()
         .then((doc) => {
-            doc.exists && setCategory(doc.data().name);
+            doc.exists && setCategory(doc.name);
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
