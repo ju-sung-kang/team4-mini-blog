@@ -1,30 +1,36 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState, useRef} from 'react';
+import { Link } from 'react-router-dom';
 import db from '../../../firebase';
 import * as S from './styles';
 
 function SettingsCategory() {
     const [categories, setCategories] = useState([]);
-    const [mainCategory, setMainCategory] = useState("");
+    const [defCategory, setDefCategory] = useState("");
+    const defCategoryRef = useRef();
     const [isAdding, setIsAdding] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentCategory, setCurrentCategory] = useState(null);
+
+    const isValidCategory = (id) => {
+        return categories.filter(ctgry => { return id === ctgry.id} ).length > 0
+    }
 
     const addCategory = (e) => {
         e.preventDefault();
         setIsAdding(true);
         setCurrentCategory({
-            title : "게시판"
+            name : "게시판",
         })
         //setCategories([...categories, {"id":"id"+categories.length, "name" : null, "topic" : null}]);
     }
 
-    const deleteCategory = (e) => {
+    const deleteCategory = (e, targetId) => {
         e.preventDefault();
         if (window.confirm('정말 삭제하시겠습니까? 해당 게시판에 쓰여진 모든 글들이 삭제됩니다.')) {
             const currentCategories = [...categories];
-            const ct = currentCategories.filter(el => el.id == e.target.id);
+            const ct = currentCategories.filter(el => el.id == targetId);
             if(ct.length > 0) {
-                db.collection("category").doc(e.target.id).delete().then(() => {
+                db.collection("categories").doc(targetId).delete().then(() => {
                     console.log("Document successfully deleted!");
                 }).catch((error) => {
                     console.error("Error removing document: ", error);
@@ -34,14 +40,13 @@ function SettingsCategory() {
  
     }
 
-    const handleUpdateBtn = (e) => {
+    const handleUpdateBtn = (e, targetId) => {
         e.preventDefault();
+        console.log(targetId);
         setIsEditing(true);
         const currentCategories = [...categories];
-        const ct = currentCategories.filter(el => el.id == e.target.id);
-        if(ct.length > 0) {
-            setCurrentCategory(ct[0]);
-        }
+        const ct = currentCategories.filter(el => el.id == targetId);
+        ct.length > 0 && setCurrentCategory(ct[0]);
         
     }
 
@@ -57,9 +62,9 @@ function SettingsCategory() {
 
     const registerCategory = (e) => {
         e.preventDefault()
-        db.collection('category').add({
-            title : currentCategory.title,
-            postCounts : 0,
+        db.collection('categories').add({
+            name : currentCategory.name,
+            time : Date.now(),
         }).then(() => {
             alert("등록이 성공적으로 완료되었습니다.");
             setIsAdding(false);
@@ -70,8 +75,8 @@ function SettingsCategory() {
 
     const updateCategory = (e) => {
         e.preventDefault()
-        db.collection('category').doc(currentCategory.id).update({
-            title : currentCategory.title
+        db.collection('categories').doc(currentCategory.id).update({
+            name : currentCategory.name
         }).then(() => {
             alert("수정이 성공적으로 완료되었습니다.");
             setIsEditing(false);
@@ -82,15 +87,23 @@ function SettingsCategory() {
 
     const updateCurrentCategoryName = (e) => {
         e.preventDefault();
-        setCurrentCategory({...currentCategory, title:e.target.value });
+        setCurrentCategory({...currentCategory, name:e.target.value });
 
     }
 
-    const updateMainCategory = (e) => {
+    const updateDefCategory = (e) => {
         e.preventDefault();
+        const val = defCategoryRef.current.value;
+        console.log(val);
+        if (val === "") {
+            alert("카테고리를 생성해주세요!");
+            return 
+        }
+
         db.collection('blogInfo').doc('info').update(
-            {'mainCategory' : e.target.value}
+            {'defCategory' : val}
         ).then(() => {
+            setDefCategory(val);
             alert("수정이 성공적으로 완료되었습니다.");
         }).catch((error) => {
             alert("수정 중에 오류가 발생하였습니다. 다시 시도해주세요.");
@@ -98,7 +111,8 @@ function SettingsCategory() {
     }
 
     useEffect(() => {
-        db.collection('category')
+        db.collection('categories')
+        .orderBy('time')
         .onSnapshot(snapshot => (
             setCategories(snapshot.docs.map(doc => {
                 var data = doc.data();
@@ -109,30 +123,35 @@ function SettingsCategory() {
 
         db.collection('blogInfo').doc('info').get()
             .then((doc) => {
-            doc.exists && setMainCategory(doc.data().mainCategory);
+            doc.exists && setDefCategory(doc.data().defCategory);
         })
     }, []);
 
     return (
         <S.CategorySettingsContainer>
-            <S.Title>📌카테고리 설정</S.Title>
-            <S.CategorySettingsInnerBox>
-                <S.CategorySettingsInnerBox>
+            <Link to="/">메인</Link>
+            <S.Title>📌 카테고리 설정</S.Title>
+            <S.Container withMargin>
+                <S.Container withMargin>
                     <S.Subtitle>메인 카테고리</S.Subtitle>
                     <S.Desc>
                         기본으로 노출될 카테고리를 선택하세요.
                         <br/>
                         메인 영역에 노출됩니다.
                     </S.Desc>
-                    <S.BlogMainCategorySelect 
-                        value={mainCategory} 
-                        onChange={e => setMainCategory(e.target.value)}>
-                        {mainCategory === "" && <option value="">선택</option> }
+                    <S.BlogDefCategorySelect 
+                        ref = { defCategoryRef }
+                        value={isValidCategory(defCategory) ? defCategory : "" } 
+                        onChange={e => setDefCategory(e.target.value)}
+                        >
+                        {categories.length == 0 && <option value="">카테고리를 생성해주세요.</option> }
                         {categories.map((category) => <option value={category.id}>{category.name}</option>)}
-                    </S.BlogMainCategorySelect>
-                    <S.SaveButton>수정</S.SaveButton>
-                </S.CategorySettingsInnerBox>
-                <S.CategorySettingsControls>
+                    </S.BlogDefCategorySelect>
+                    <S.Container>
+                        <S.CommonButton onClick={updateDefCategory}>설정</S.CommonButton>
+                    </S.Container>
+                </S.Container>
+                <S.Container withMargin>
                     <S.Subtitle>카테고리 관리</S.Subtitle>
                     <S.Desc>
                         카테고리를 추가/수정/삭제할 수 있습니다.
@@ -148,28 +167,17 @@ function SettingsCategory() {
                                 { categories.map((el, i) => (
                                     <S.CategoryTableRow key={`row${i}`}>
                                         <S.CategoryTableRowData>
-                                            {el.id}
+                                            { el.name }
                                         </S.CategoryTableRowData>
                                         <S.CategoryTableRowData>
-                                            {
-                                                el.title
-                                            }
-                                        </S.CategoryTableRowData>
-                                        <S.CategoryTableRowData>
+                                        <S.Container align='right'>
+                                            <S.CommonButton onClick={e => handleUpdateBtn(e, el.id)}>수정</S.CommonButton>
+                                            <S.CommonButton onClick={e => deleteCategory(e, el.id)}>삭제</S.CommonButton>
+                                        </S.Container>
                                             
-                                            {el.postCounts 
-                                            }
-                                        </S.CategoryTableRowData>
-                                        <S.CategoryTableRowData>
-                                            <S.CategoryUpdateButton id={el.id} onClick={handleUpdateBtn}>수정</S.CategoryUpdateButton>
-                                            <S.CategoryDeleteButton id={el.id} onClick={deleteCategory}>삭제</S.CategoryDeleteButton>
-                                            {/* <S.CategoryAddSaveButton onClick={findIndex}>확인</S.CategoryAddSaveButton> */}
                                             
                                         </S.CategoryTableRowData>
                                     </S.CategoryTableRow>
-                                    
-                                    
-
                                 ))}
                                 
                             </S.CategoryTableBody>
@@ -177,27 +185,30 @@ function SettingsCategory() {
                         <S.CategoryAddButton onClick={addCategory}>카테고리 추가</S.CategoryAddButton>
                     </S.CategoryForm>
                     
-                </S.CategorySettingsControls>
-                {/* <S.SaveButtonContainer>
-                    <S.SaveButton></S.SaveButton>
-                </S.SaveButtonContainer> */}
-            </S.CategorySettingsInnerBox>
+                </S.Container>
+            </S.Container>
             {(isAdding || isEditing) && 
             <S.DimView>
-                <S.CategoryAddForm>
-                    <S.CategoryTable>
-                        <S.CategoryTableBody>
-                            <S.CategoryTableRow>
-                                <S.CategoryTableRowHead>게시판 이름</S.CategoryTableRowHead>
-                                <S.CategoryTableRowData>
-                                    <S.CategoryNameInput onChange={updateCurrentCategoryName} value={currentCategory.title}></S.CategoryNameInput>
-                                </S.CategoryTableRowData>
-                            </S.CategoryTableRow>
-                        </S.CategoryTableBody>
-                    </S.CategoryTable>
-                    <S.SaveEditedButton onClick = {isAdding ? registerCategory : updateCategory }>{isAdding ? "등록" : "수정"}</S.SaveEditedButton>
-                    <S.SaveCancelButton onClick = {isAdding ? cancelAdding : cancelEditing }>취소</S.SaveCancelButton>
-                </S.CategoryAddForm>
+                <S.CenterContainer>
+                    <S.Container align='center' withMargin>{isAdding ? "카테고리 추가" : "카테고리 수정" }</S.Container>
+                    <S.CategoryAddForm>
+                        <S.CategoryTable withBottomMargin>
+                            <S.CategoryTableBody>
+                                <S.CategoryTableRow>
+                                    <S.CategoryTableRowHead>게시판 이름</S.CategoryTableRowHead>
+                                    <S.CategoryTableRowData>
+                                        <S.CategoryNameInput onChange={updateCurrentCategoryName} value={currentCategory.name}></S.CategoryNameInput>
+                                    </S.CategoryTableRowData>
+                                </S.CategoryTableRow>
+                            </S.CategoryTableBody>
+                        </S.CategoryTable>
+                        <S.Container align='center'>
+                            <S.CommonButton onClick = {isAdding ? registerCategory : updateCategory }>{isAdding ? "등록" : "수정"}</S.CommonButton>
+                            <S.CommonButton onClick = {isAdding ? cancelAdding : cancelEditing }>취소</S.CommonButton>
+                        </S.Container>
+                    </S.CategoryAddForm>
+                </S.CenterContainer>
+                
             </S.DimView>
 
             }
