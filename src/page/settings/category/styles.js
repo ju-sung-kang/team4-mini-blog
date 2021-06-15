@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 export const CategorySettingsContainer = styled.div`
     margin: 10px;
@@ -16,7 +16,15 @@ export const Title = styled.h2`
 export const Subtitle = styled.h3`
 `;
 
-export const BlogMainCategorySelect = styled.select`
+export const Container = styled.div`
+    ${props =>
+        props.withMargin && css`margin: 10px;`}
+    ${props =>
+        props.align && css`text-align: ${props.align};`}
+`;
+
+
+export const BlogDefCategorySelect = styled.select`
     margin-top: 30px;
     margin-bottom: 30px;
     width : 300px;
@@ -25,15 +33,10 @@ export const BlogMainCategorySelect = styled.select`
     border: 1px solid #ccc;    
 `;
 
-export const CategorySettingsInnerBox = styled.div`
+export const CategorySettingsInnerContainer = styled.div`
     margin: 10px;
     // background-color: green;
     font-size: 12px/1.5em;
-`;
-
-export const CategorySettingsControls = styled.div`
-    margin: 10px;
-    // background-color: green;
 `;
 
 export const Desc = styled.p`
@@ -45,8 +48,10 @@ export const CategoryForm = styled.form`
 `;
 
 export const CategoryTable = styled.table`
-    width : 100%;   
-    background-color : green;
+    width : 300px;   
+    border : 1px solid rgb(230, 230, 230);
+    ${props =>
+        props.withBottomMargin && css`margin-bottom: 5px;`}
 `;
 
 export const CategoryTableHeader = styled.thead`
@@ -92,23 +97,24 @@ export const CategoryTopicSelect = styled.select`
     // background-color: purple;
 `;
 
-export const CategoryUpdateButton = styled.button`
+export const CommonButton = styled.button`
     height: 30px;
-`;
-
-export const CategoryDeleteButton = styled.button`
-    height: 30px;
+    ${props =>
+        props.withLeftMargin && css`margin-left: 5px;`}
+    ${props =>
+        props.withRightMargin && css`margin-right: 5px;`}
 `;
 
 export const CategoryAddSaveButton = styled.button`
 `;
 
 export const CategoryAddButton = styled.button`
-    width : 100%;
+    width : 300px;
     height : 60px;
     border: none;
-    background-color : grey;
+    background-color : rgb(100, 200, 64);
     text-align: left;
+    color: white;
 `;
 
 export const SaveButtonContainer = styled.div`
@@ -121,15 +127,28 @@ export const SaveButton = styled.button`
     background-color: blue;
 `;
 
-export const CategoryAddForm = styled.form`
+export const CenterContainer = styled.div`
     position: absolute;
     margin: auto;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    width: 50%;
-    height: 50%;
+    // width: 50%;
+    // height: 50%;
+    width: 300px;
+    height: 200px;
+`;
+
+export const CategoryAddForm = styled.form`
+    // position: absolute;
+    // margin: auto;
+    // top: 0;
+    // right: 0;
+    // bottom: 0;
+    // left: 0;
+    // width: 300px;
+    // height: 120px;
     background-color : white;
 `;
 

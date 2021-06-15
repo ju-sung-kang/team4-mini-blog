@@ -5,3 +5,7 @@ export const MainContainer = styled.div`
     position: absolute;
     left: 10%;
 `;
+
+export const MarginBottom = styled.div`
+    height: 5rem;
+`;

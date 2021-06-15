@@ -9,19 +9,18 @@ import ViewPosting from '../../page/view-posting/index';
 
 
 const Main = () => {
-  const [defCategory, setDefCategory] = useState();
-  const [curCategory, setCurCategory] = useState(defCategory);
+  const [curCategory, setCurCategory] = useState();
   let history = useHistory();
   useEffect(()=> {
     getDefCategory();
   }, []);
 
   const getDefCategory = () => {
-    db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65')
+    db.collection('blogInfo').doc('info')
     .get()
     .then((doc) => {
           const tmp = doc.data();
-          setDefCategory(tmp.defCategory);
+          setCurCategory(tmp.defCategory);
     }).catch((error) => {
         console.log("Error getting document:", error);
     });
@@ -45,6 +44,7 @@ const Main = () => {
           </Route>
         </Switch>
         <Footer currentCategory={curCategory} categoryHandler={categoryHandler}/>
+        <S.MarginBottom/>
     </S.MainContainer>
 
   );
