@@ -4,6 +4,7 @@ import db from '../../firebase';
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import * as S from './styles';
+import Reply from '../../components/reply/index';
 
 function ViewPosting() {
     const { search } = useLocation();
@@ -13,7 +14,6 @@ function ViewPosting() {
     const [ post, setPost] = useState({title : "가져오는 중입니다", text : "가져오는 중입니다", regDate : "가져오는 중입니다" });
 
     useEffect(() => {
-        console.log(categoryId);
 
         const categoryRef = db
         .collection('categories')
@@ -23,7 +23,7 @@ function ViewPosting() {
         categoryRef
         .get()
         .then((doc) => {
-            doc.exists && setCategory(doc.name);
+            doc.exists && setCategory(doc.data().name);
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
@@ -50,8 +50,10 @@ function ViewPosting() {
 
             </S.PostingHeader>
             <S.PostingBody>
-                <p>{ post.text } </p>
+                { post.text }
             </S.PostingBody>
+
+            <Reply categoryID={categoryId} postID={postId}/>
             
         </S.PostingContainer>
     )

@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import db from '../../firebase.js';
 import * as S from './styles.js';
 
-function Reply() {
+function Reply(props) {
 
     // 이 페이지에서만 쓸 애들
     let [postLiked, setPostLiked] = useState(false); // 글 좋아요 눌렀는지 여부
@@ -33,8 +33,8 @@ function Reply() {
     // 유저 아이디, 글 아이디 설정
     useEffect(()=>{
 
-        setCategoryID("lOm8hxxVxfNDv8iLzVqa");
-        setPostID("StCE74Tk6GFGNJMiCmxX");
+        setCategoryID(props.categoryID);
+        setPostID(props.postID);
     }, [])
 
 
@@ -241,7 +241,8 @@ function Reply() {
       // 댓글 전송하기
       const submitReply = () => {
 
-        let today = new Date();
+        const today = new Date();
+        const inputContent = replyContent.replace(/\n/g, '<br/>');
 
         if (!replyNickName || !replyPassword) {
             alert("닉네임, 비밀번호를 입력해주세요");
@@ -253,7 +254,7 @@ function Reply() {
                     heart: 0,
                     regDate: today.toLocaleDateString(),
                     time: Date.now(),
-                    text: replyContent,
+                    text: inputContent,
                     reReplies: [],
                     reRepliesCnt: 0,
                     nickName: replyNickName,
@@ -312,7 +313,6 @@ function Reply() {
             }
         ) 
     }
-
       
     return (
         <S.Reply>
@@ -339,43 +339,44 @@ function Reply() {
             {
                 replyArrow === "↑"
                 ?   <S.ReplyList>
-                        <S.ReplyItem>
                             {
                                 reply.map((text, i)=>{
                                     if (isEditing[i]) {
                                         return (
                                             <>
-                                            <S.Cancel onClick={()=>{cancelEditReply(i)}}>취소</S.Cancel>
                                             <S.WritingReply>
+                                                <S.Cancel onClick={()=>{cancelEditReply(i)}}>취소</S.Cancel>
                                                 <S.WritingReplyUserName>{reply[i].nickName}</S.WritingReplyUserName>
                                                 <S.WritingReplyInput defaultValue={reply[i].text} onChange={(e)=>{setReplyEditContent(e.target.value)}}></S.WritingReplyInput><br />
                                                 <S.ReplySubmitBtn onClick={()=>{editReply(i)}}>등록</S.ReplySubmitBtn>
                                             </S.WritingReply>
+                                            
                                             </>
                                         )
                                     } else {
                                     return(
-                                        <> 
+                                        <S.ReplyItem>
                                             <p>{reply[i].nickName}</p>
                                             <p dangerouslySetInnerHTML={{__html: reply[i].text}} />
                                             <S.ReplyDate>{reply[i].regDate}</S.ReplyDate>
-                                            <S.ReplyAgain onClick={()=>{clickReReply(i)}}>답글</S.ReplyAgain>
-                                            <S.ReplyDelete onClick={()=>deleteReply(i)}>삭제</S.ReplyDelete>
-                                            <S.ReplyEdit onClick={()=>{showEditReply(i)}}>수정</S.ReplyEdit>
-                                            <p><S.ReplyLikeBtn onClick={()=>clickReplyLikeButton(i)}>
+                                            <S.ReReplyButton onClick={()=>{clickReReply(i)}}>답글</S.ReReplyButton>
+                                            <S.ReplyLikeBtn onClick={()=>clickReplyLikeButton(i)}>
                                             {
                                                 replyLiked[i]
                                                 ? "💖"
                                                 : "🤍"
                                             }
-                                            </S.ReplyLikeBtn>  {reply[i].heart}</p>
+                                            </S.ReplyLikeBtn>  {reply[i].heart}
+                                            <S.ReplyDelete onClick={()=>deleteReply(i)}>삭제</S.ReplyDelete>
+                                            <S.ReplyEdit onClick={()=>{showEditReply(i)}}>수정</S.ReplyEdit>
+                                            <S.ReReplyList>
                                             {
                                                 reply[i].reReplies
                                                 ? <>{
                                                     reply[i].reReplies.map((reReply, j)=>{
                                                         return (
                                                             <S.ReReply>
-                                                                ➡{reReply}
+                                                                {reReply}
                                                                 <S.ReplyDelete onClick={()=>deleteReReply(i, j)}>삭제</S.ReplyDelete>
                                                             </S.ReReply>
                                                         )
@@ -383,15 +384,18 @@ function Reply() {
                                                 }</>
                                                 : null
                                             }
+                                            </S.ReReplyList>
+                                            <br/>
                                             {
                                                 showReReply[i]
-                                                ?   <S.WritingReply>
+                                                ?   <S.WritingReply style={{marginLeft: "20px", height: "180px"}}>
+                                                        <br/>
                                                         <S.WritingReplyInput id="reReplyContent" placeholder="답글 쓰기" onChange={(e)=>{setReReplyContent(e.target.value)}}></S.WritingReplyInput><br />
                                                         <S.ReplySubmitBtn onClick={()=>submitReReply(i)}>등록</S.ReplySubmitBtn>
                                                     </S.WritingReply>
                                                 : null
                                             }
-                                        </>
+                                        </S.ReplyItem>
                                         )}
                                     }
                                 )
@@ -404,7 +408,6 @@ function Reply() {
                                     <S.ReplySubmitBtn onClick={submitReply}>등록</S.ReplySubmitBtn>
                                 </S.WritingReply>
                             </p>
-                        </S.ReplyItem>
                     </S.ReplyList>
                 : null
             }

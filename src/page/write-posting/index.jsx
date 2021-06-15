@@ -13,10 +13,13 @@ const WritePosting = () => {
     const history = useHistory();
 
     const submit = () => {
+        const today = new Date();
         db.collection("categories").doc(categoryId).collection('posts')
         .add({
             text:text, 
-            title:title
+            title:title,
+            regDate: today.toLocaleDateString(),
+            heart:0
         },{merge:true}).then(()=>{
             alert("작성 완료");
             history.push('/');
