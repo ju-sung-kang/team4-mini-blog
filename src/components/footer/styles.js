@@ -14,25 +14,31 @@ export const Profile = styled.div`
     flex-wrap: wrap;
     width: 20%;
     border: 1px solid #D5D5D5;
+    border-radius: 1rem;
     background-color: #FDFDFB;
-    border-radius: 5%;
     margin-right: 1rem;
 `;
 
 export const ProfileImage = styled.img`
-    width: 10rem;
-    height: 10rem;
+    width: 80%;
+    height: 12rem;
     object-fit: cover;
+    border-radius: 1rem;
+    margin-top: 1rem;
 `;
 
 export const ProfileName = styled.p`
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding-left: 10%;
 `;
 
 export const ProfileIntro = styled.p`
     width: 100%;
-    font-size: 1rem;
+    font-size: 0.7rem;
+    padding-left: 10%;
+    padding-right: 10%;
 `;
 
 export const Settings = styled.div`
@@ -43,19 +49,24 @@ export const Settings = styled.div`
     flex-wrap: wrap;
 `;
 
+export const BlogInfoSettingsContainer = styled.div`
+    width: 100%;
+    padding-left: 10%;
+    display: flex;
+`;
+
+export const BlogInfoSettingsEmoji = styled.div`
+    color: red;
+`;
+
 export const BlogInfoSettings = styled.div`
-    width: 80%;
-    height: 2rem;
     display: flex;
     align-items: center;
-    justify-content: center;
-    border: 1px solid gray;
-    background-color: #FFFFFF;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    font-size: 0.6rem;
     cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 700;
+    &: hover {
+        text-decoration: underline;
+    }
 `;
 
 export const CategorySettings = styled.div`
@@ -66,10 +77,11 @@ export const CategorySettings = styled.div`
     justify-content: center;
     border: 1px solid gray;
     background-color: #FFFFFF;
+    margin-top: 1rem;
     margin-bottom: 1rem;
     cursor: pointer;
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: 0.7rem;
+    font-weight: 900;
 `;
 
 // category

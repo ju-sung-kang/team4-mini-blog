@@ -104,8 +104,11 @@ const Footer = (props) => {
                 <S.ProfileName>{user.name}</S.ProfileName>
                 <S.ProfileIntro>{user.intro}</S.ProfileIntro>
                 <S.Settings>
-                    <S.BlogInfoSettings onClick={goToSettingsBlogInfo}>😀 프로필 설정</S.BlogInfoSettings>
-                    <S.CategorySettings onClick={goToSettingsCategory}>🗂️ 카테고리 설정</S.CategorySettings>
+                    <S.BlogInfoSettingsContainer>
+                        <S.BlogInfoSettingsEmoji>▸</S.BlogInfoSettingsEmoji>
+                        <S.BlogInfoSettings onClick={goToSettingsBlogInfo}> 프로필 설정</S.BlogInfoSettings>
+                    </S.BlogInfoSettingsContainer>
+                    <S.CategorySettings onClick={goToSettingsCategory}>⚙️ 카테고리 설정</S.CategorySettings>
                 </S.Settings>
             </S.Profile>
             <S.Category>
