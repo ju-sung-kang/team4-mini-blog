@@ -4,6 +4,7 @@ import * as S from './styles';
 
 function SettingsCategory() {
     const [categories, setCategories] = useState([]);
+    const [mainCategory, setMainCategory] = useState("");
     const [isAdding, setIsAdding] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [currentCategory, setCurrentCategory] = useState(null);
@@ -85,9 +86,19 @@ function SettingsCategory() {
 
     }
 
+    const updateMainCategory = (e) => {
+        e.preventDefault();
+        db.collection('blogInfo').doc('info').update(
+            {'mainCategory' : e.target.value}
+        ).then(() => {
+            alert("수정이 성공적으로 완료되었습니다.");
+        }).catch((error) => {
+            alert("수정 중에 오류가 발생하였습니다. 다시 시도해주세요.");
+        });
+    }
+
     useEffect(() => {
-        const unsubscribe = db
-        .collection('category')
+        db.collection('category')
         .onSnapshot(snapshot => (
             setCategories(snapshot.docs.map(doc => {
                 var data = doc.data();
@@ -96,17 +107,33 @@ function SettingsCategory() {
             }))
         ))
 
-        return () => {
-            unsubscribe();
-        }
-
+        db.collection('blogInfo').doc('info').get()
+            .then((doc) => {
+            doc.exists && setMainCategory(doc.data().mainCategory);
+        })
     }, []);
 
     return (
         <S.CategorySettingsContainer>
-            <S.Title>📌카테고리 관리</S.Title>
+            <S.Title>📌카테고리 설정</S.Title>
             <S.CategorySettingsInnerBox>
+                <S.CategorySettingsInnerBox>
+                    <S.Subtitle>메인 카테고리</S.Subtitle>
+                    <S.Desc>
+                        기본으로 노출될 카테고리를 선택하세요.
+                        <br/>
+                        메인 영역에 노출됩니다.
+                    </S.Desc>
+                    <S.BlogMainCategorySelect 
+                        value={mainCategory} 
+                        onChange={e => setMainCategory(e.target.value)}>
+                        {mainCategory === "" && <option value="">선택</option> }
+                        {categories.map((category) => <option value={category.id}>{category.name}</option>)}
+                    </S.BlogMainCategorySelect>
+                    <S.SaveButton>수정</S.SaveButton>
+                </S.CategorySettingsInnerBox>
                 <S.CategorySettingsControls>
+                    <S.Subtitle>카테고리 관리</S.Subtitle>
                     <S.Desc>
                         카테고리를 추가/수정/삭제할 수 있습니다.
                     </S.Desc>
