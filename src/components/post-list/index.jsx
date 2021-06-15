@@ -1,46 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import db from '../../firebase';
-import { PostContainer } from '../post/styles';
 import * as S from './styles';
 
 const PostList = (props) => {
   const history = useHistory();
-  const [postList, setPostList] = useState([{title:'로딩중', postId: "default"}]);
-  const [categoryName, setCategoryName] = useState();
+  const [postList, setPostList] = useState([{title:'가져오는 중입니다', postId: 'default'}]);
+  const [categoryName, setCategoryName] = useState('가져오는 중입니다');
   useEffect(() => {
     getCategoryName();
     getPostList();
   });
 
   const getCategoryName = () => {
-    db.collection('categories').doc(props.currentCategory)
-    .get()
-    .then((doc) => {
-      const name = doc.data().name;
-      setCategoryName(name);
-    })
-    .catch((error) => {
-      console.log("Error getting documents: ", error);
-    })
-  };
+    if(props.currentCategory){
+      db.collection('categories').doc(props.currentCategory)
+      .get()
+      .then((doc) => {
+        const name = doc.data().name;
+        setCategoryName(name);
+      })
+      .catch((error) => {
+        console.log("Error getting documents: ", error);
+      })
+    }
+  }
 
   const getPostList = () => {
-    db.collection('categories').doc(props.currentCategory).collection('posts')
-    .get()
-    .then((querySnapshot) => {
-      var array = [];
-      querySnapshot.forEach((doc) => {
-          const tmp = doc.data();
-          const postId = doc.id;
-          array.push({postId: postId, title: tmp.title});
-      });
-      setPostList(array);
-    })
-    .catch((error) => {
-        console.log("Error getting documents: ", error);
-    })
-  };
+    if(props.currentCategory){
+      db.collection('categories').doc(props.currentCategory).collection('posts')
+      .get()
+      .then((querySnapshot) => {
+        var array = [];
+        querySnapshot.forEach((doc) => {
+            const tmp = doc.data();
+            const postId = doc.id;
+            array.push({postId: postId, title: tmp.title});
+        });
+        setPostList(array);
+      })
+      .catch((error) => {
+          console.log("Error getting documents: ", error);
+      })
+    }
+  }
+
   const postClick = (e) => {
     e.preventDefault();
     console.log("clicked");

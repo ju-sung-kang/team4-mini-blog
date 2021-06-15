@@ -1,10 +1,12 @@
 import React, {useState, useEffect } from 'react';
 import * as S from './styles.js';
 import db from '../../firebase.js';
+import { useHistory } from 'react-router-dom';
 
 const Footer = (props) => {
 
     const API_KEY = "53da2272c20bab85b6e0a1ba478a531e";
+    const history = useHistory();
     const [loc, setLoc] = useState({lat: 0, long: 0});
     const [weather, setWeather] = useState({temperature: 0, name: "", icon: ""})
     const [today, setToday] = useState(0);
@@ -41,13 +43,13 @@ const Footer = (props) => {
     }
 
     const getUser = () => {
-        db.collection('blogInfo').doc('PkW2DmPU6YAZCQPBNc65')
+        db.collection('blogInfo').doc('info')
         .get()
         .then((doc) => {
             if (doc.exists) {
                 const tmp = doc.data();
                 setUser({
-                    image: tmp.profileImage,
+                    image: tmp.profileImageUrl,
                     name: tmp.nickName,
                     intro: tmp.introduction
                 });
@@ -85,8 +87,13 @@ const Footer = (props) => {
         });
     }
 
+    const goToSettingsBlogInfo = () => {
+        history.push("/settings/info")
+    }
 
-    //useEffect(getPosition, []);
+    const goToSettingsCategory = () => {
+        history.push("/settings/category")
+    }
 
     const img_url = `http://openweathermap.org/img/w/${weather.icon}.png`;
 
@@ -96,15 +103,23 @@ const Footer = (props) => {
                 <S.ProfileImage src={user.image}/>
                 <S.ProfileName>{user.name}</S.ProfileName>
                 <S.ProfileIntro>{user.intro}</S.ProfileIntro>
+                <S.Settings>
+                    <S.BlogInfoSettingsContainer>
+                        <S.BlogInfoSettingsEmoji>▸</S.BlogInfoSettingsEmoji>
+                        <S.BlogInfoSettings onClick={goToSettingsBlogInfo}> 프로필 설정</S.BlogInfoSettings>
+                    </S.BlogInfoSettingsContainer>
+                    <S.CategorySettings onClick={goToSettingsCategory}>⚙️ 카테고리 설정</S.CategorySettings>
+                </S.Settings>
             </S.Profile>
             <S.Category>
+                <S.CategoryLabel>카테고리</S.CategoryLabel>
                 {categoryList.length === 0 ? (
                     <S.NoCategory>설정에서 카테고리를 추가해주세요!</S.NoCategory>
                 ) : (
                   categoryList.map((category) => (
-                    <S.CategoryLabel key={category.categoryId} onClick={()=>categoryClick(category.categoryId)}>
+                    <S.CategoryTitle key={category.categoryId} onClick={()=>categoryClick(category.categoryId)}>
                         {category.categoryName}
-                    </S.CategoryLabel>
+                    </S.CategoryTitle>
                   ))
                 )}
             </S.Category>
