@@ -16,7 +16,7 @@ const Footer = (props) => {
         setToday(today + 1);
         setTotal(total + 1);
         getCategoryList();
-        //getPosition();
+        getPosition();
         getUser();
     }, []);
 
