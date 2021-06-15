@@ -20,7 +20,7 @@ function App() {
           <WritePosting/>
         </Route>
         <Route path="/">    {/* default root는 마지막에 작성 */}
-          /*<Main />
+          <Main />
         </Route>
       </Switch>
     </BrowserRouter>
