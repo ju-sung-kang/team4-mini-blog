@@ -5,7 +5,7 @@ export const Reply = styled.div`
 `;
 
 export const Buttons = styled.div`
-    margin-left: 293px;
+    margin-left: 30px;
 `;
 
 export const LikeButton = styled.button`
@@ -18,14 +18,17 @@ export const ReplyButton = styled.button`
 
 export const ReplyList = styled.ul`
     margin: auto;
-    width: 60%;
-    border: 1px solid black;
 `;
 
 export const ReplyItem = styled.li`
     text-align: left;
     list-style: none;
-    margin: 5px;
+    margin: 20px;
+    margin-left: 0px;
+    border-top: 1px black solid;
+    padding: 30px;
+    padding-top: 0px;
+    padding-bottom: 20px;
 `;
 
 export const ReplyDate = styled.p`
@@ -33,10 +36,11 @@ export const ReplyDate = styled.p`
     color: gray;
 `;
 
-export const ReplyAgain = styled.button`
+export const ReReplyButton = styled.button`
     border: 0;
     outline: 0;
     background-color: transparent;
+    display: inline-block;
     &:hover {
         text-decoration-line: underline;
         cursor: pointer;
@@ -70,6 +74,8 @@ export const Cancel = styled.button`
     outline: 0;
     background-color: transparent;
     float: right;
+    margin-right: 10px;
+    margin-top: 10px;
     &:hover {
         text-decoration-line: underline;
         cursor: pointer;
@@ -80,48 +86,58 @@ export const ReplyLikeBtn = styled.button`
     border: 0;
     outline: 0;
     background-color: transparent;
+    display: inline-block;
     &:hover {
         cursor: pointer;
     }
 `;
 
 export const WritingReply = styled.div`
-    width: 60%;
-    height: 300px;
+    width: 90%;
+    height: 210px;
+    margin-top: 20px;
     border: 1px solid black;
     box-sizing: border-box;
     position: relative;
-    text-align: center;
 `;
 
 export const WritingReplyUserName = styled.p`
-    margin-left: 20px;
+    margin-left: 15px;
     text-align: left;
 `;
 
 export const WritingReplyNickName = styled.input`
-    display: inline-block;
     margin: 10px;
+    height: 30px;
+    width: 120px;
 `;
 
 export const WritingReplyPassword = styled.input`
-    display: inline-block;
     text-align: left;
     margin: 10px;
+    height: 30px;
+    width: 120px;
 `;
 
 export const WritingReplyInput = styled.textarea`
     white-space: normal;
     width: 95%;
-    height: 200px;
+    height: 100px;
+    margin-left: 10px;
 `;
 
 export const ReplySubmitBtn = styled.button`
     position: absolute;    
-    right: 10px;
-    bottom: 10px;  
+    width: 50px;
+    height: 30px;
+    right: -1px;
+    bottom: -1px;
 `;
 
-export const ReReply = styled.div`
-    margin-left: 30px;
+export const ReReplyList = styled.ul``;
+
+export const ReReply = styled.li`
+    margin-left: 50px;
+    margin-top: 30px;
+    list-style-type: '➡   ';
 `;
