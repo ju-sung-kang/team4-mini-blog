@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const HeaderContainer = styled.div`
     width: 100%;
-    height: 15rem;
-    position: relative;
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 export const BannerImage = styled.img`
@@ -13,12 +13,9 @@ export const BannerImage = styled.img`
 `;
 
 export const BannerText = styled.div`
-    border: 0.3rem solid white;
-    color: white;
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 700;
-    position: absolute;
-    top: 50%;
-    left: 60%;
-    transform: translate( 0%, -50% );
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 `;

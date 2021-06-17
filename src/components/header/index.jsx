@@ -4,17 +4,20 @@ import * as S from './styles';
 
 const Header = () => {
     const [bannerImage, setBannerImage] = useState();
+    const [blogName, setBlogName] = useState();
     useEffect(() => {
-        getBannerImage();
+        getInfo();
     }, [])
 
-    const getBannerImage = () => {
+    const getInfo = () => {
         db.collection('blogInfo').doc('info')
         .get()
         .then((doc) => {
             if (doc.exists) {
                 const tmp = doc.data();
                 setBannerImage(tmp.bannerImageUrl);
+                setBlogName(tmp.blogName);
+                console.log("header banner image getting success!")
             }
             else {
                 console.log("Error getting banner image!");
@@ -26,8 +29,8 @@ const Header = () => {
 
     return (
         <S.HeaderContainer>
+            <S.BannerText>{blogName}</S.BannerText>
             <S.BannerImage src={bannerImage}/>
-            <S.BannerText>디카프리오의 블로그</S.BannerText>
         </S.HeaderContainer>
     );
 }

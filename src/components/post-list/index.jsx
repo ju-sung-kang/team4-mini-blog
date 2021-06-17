@@ -10,7 +10,7 @@ const PostList = (props) => {
   useEffect(() => {
     getCategoryName();
     getPostList();
-  });
+  },[]);
 
   const getCategoryName = () => {
     if(props.currentCategory){
@@ -19,6 +19,7 @@ const PostList = (props) => {
       .then((doc) => {
         const name = doc.data().name;
         setCategoryName(name);
+        console.log("post list category name getting success");
       })
       .catch((error) => {
         console.log("Error getting documents: ", error);
@@ -38,6 +39,7 @@ const PostList = (props) => {
             array.push({postId: postId, title: tmp.title});
         });
         setPostList(array);
+        console.log("post list postlist getting success");
       })
       .catch((error) => {
           console.log("Error getting documents: ", error);
@@ -66,19 +68,18 @@ const PostList = (props) => {
     <S.PostListContainer>
       <S.PostListTitle>{categoryName}</S.PostListTitle>
         <S.ContentContainer>
-        {postList.length === 0 ? (
-            <S.NoPost>쓰인 글이 없습니다!</S.NoPost>
-          ) : (
-          postList.map((post) => (
-            <S.PostContainer
-              id={post.postId}
-              key={post.postId}
-              //title={post.title}
-              onClick={postClick}
-            >{post.title}</S.PostContainer>
-          ))
-        )}
-        <S.PostAdd onClick={postWrite}>새글 작성</S.PostAdd>
+          {postList.length === 0 ? (
+              <S.NoPost>쓰인 글이 없습니다!</S.NoPost>
+            ) : (
+              postList.map((post) => (
+                <S.PostContainer
+                  id={post.postId}
+                  key={post.postId}
+                  onClick={postClick}
+                >{post.title}</S.PostContainer>
+              ))
+          )}
+          <S.PostAdd onClick={postWrite}>새글 작성</S.PostAdd>
         </S.ContentContainer>
 
     </S.PostListContainer>
