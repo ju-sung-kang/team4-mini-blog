@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef} from 'react';
-import { Link } from 'react-router-dom';
 import db from '../../../firebase';
 import * as S from './styles';
 
@@ -129,10 +128,8 @@ function SettingsCategory() {
 
     return (
         <S.CategorySettingsContainer>
-            <Link to="/">메인</Link>
-            <S.Title>📌 카테고리 설정</S.Title>
-            <S.Container withMargin>
-                <S.Container withMargin>
+            <S.MainContainer withMargin>
+                <S.SubContainer>
                     <S.Subtitle>메인 카테고리</S.Subtitle>
                     <S.Desc>
                         기본으로 노출될 카테고리를 선택하세요.
@@ -150,8 +147,8 @@ function SettingsCategory() {
                     <S.Container>
                         <S.CommonButton onClick={updateDefCategory}>설정</S.CommonButton>
                     </S.Container>
-                </S.Container>
-                <S.Container withMargin>
+                </S.SubContainer>
+                <S.SubContainer>
                     <S.Subtitle>카테고리 관리</S.Subtitle>
                     <S.Desc>
                         카테고리를 추가/수정/삭제할 수 있습니다.
@@ -185,8 +182,8 @@ function SettingsCategory() {
                         <S.CategoryAddButton onClick={addCategory}>카테고리 추가</S.CategoryAddButton>
                     </S.CategoryForm>
                     
-                </S.Container>
-            </S.Container>
+                </S.SubContainer>
+            </S.MainContainer>
             {(isAdding || isEditing) && 
             <S.DimView>
                 <S.CenterContainer>
