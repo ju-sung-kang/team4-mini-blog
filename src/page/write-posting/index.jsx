@@ -7,25 +7,32 @@ import * as S from './styles';
 const WritePosting = () => {
     const { search } = useLocation();
     const { categoryId } = queryString.parse(search);
-    const [title, setTitle] = useState("test title");
-    const [text, setText] = useState("test text");
-    const [curCategory, setCurcategory] = useState("6aClaivRA34P8pp2WRIV");
+    const [title, setTitle] = useState("");
+    const [text, setText] = useState("");
+    const [postImageUrl, setPostImageUrl] = useState("");
     const history = useHistory();
 
-    const submit = () => {
-        const today = new Date();
-        db.collection("categories").doc(categoryId).collection('posts')
-        .add({
-            text:text, 
-            title:title,
-            regDate: today.toLocaleDateString(),
-            heart:0
-        },{merge:true}).then(()=>{
-            alert("작성 완료");
-            history.push('/');
-        }).catch((error) => {
-            console.error("Error writing document: ", error);
-        });
+    const submit = (e) => {
+        if (e.target.value === ""){
+            alert("글 내용을 입력해주세요");
+        }
+        else{
+            const today = new Date();
+            db.collection("categories").doc(categoryId).collection('posts')
+            .add({
+                text: text, 
+                title: title,
+                regDate: today.toLocaleDateString(),
+                heart: 0,
+                time: Date.now(),
+                postImageUrl: postImageUrl
+            },{merge:true}).then(()=>{
+                alert("작성 완료");
+                history.push('/');
+            }).catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+        }
     }
 
     const onTitleChange = (e) => {
@@ -36,47 +43,147 @@ const WritePosting = () => {
         setText(e.target.value);
     }
 
+    const onUrlChange = (e) => {
+        setPostImageUrl(e.target.value);
+    }
+
+
+    const h1TagPush = () => {
+        const element = document.getElementById('form-control');
+        const original = element.value;
+        const startPos = element.selectionStart;
+        const endPos = element.selectionEnd;
+        var front = '';
+        var end = '';
+        var cur = '';
+        if (startPos === endPos){
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+
+            element.value = front + '# ' + end;
+        }
+        else{
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+            cur = original.substring(startPos, endPos);
+
+            element.value = front + '# ' + cur + end;
+        }
+    }
+
+    const h2TagPush = () => {
+        const element = document.getElementById('form-control');
+        const original = element.value;
+        const startPos = element.selectionStart;
+        const endPos = element.selectionEnd;
+        var front = '';
+        var end = '';
+        var cur = '';
+        if (startPos === endPos){
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+
+            element.value = front + '## ' + end;
+            element.focus();
+        }
+        else{
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+            cur = original.substring(startPos, endPos);
+
+            element.value = front + '## ' + cur + end;
+            element.focus()
+        }
+    }
+
+    const h3TagPsuh = () => {
+        const element = document.getElementById('form-control');
+        const original = element.value;
+        const startPos = element.selectionStart;
+        const endPos = element.selectionEnd;
+        var front = '';
+        var end = '';
+        var cur = '';
+        if (startPos === endPos){
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+
+            element.value = front + '### ' + end;
+            element.focus();
+        }
+        else{
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+            cur = original.substring(startPos, endPos);
+
+            element.value = front + '### ' + cur + end;
+            element.focus();
+        }
+    }
+
+    const toItalic = () => {
+        const element = document.getElementById('form-control');
+        const original = element.value;
+        const startPos = element.selectionStart;
+        const endPos = element.selectionEnd;
+        var front = '';
+        var end = '';
+        var cur = '';
+        if (startPos !== endPos){
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+            cur = original.substring(startPos, endPos);
+
+            element.value = front + '_' + cur + '_' + end;
+            element.focus();
+        }
+    }
+
+    const toBold = () => {
+        const element = document.getElementById('form-control');
+        const original = element.value;
+        const startPos = element.selectionStart;
+        const endPos = element.selectionEnd;
+        var front = '';
+        var end = '';
+        var cur = '';
+        if (startPos !== endPos){
+            front = original.substring(0,startPos);
+            end = original.substring(endPos,original.length);
+            cur = original.substring(startPos, endPos);
+
+            element.value = front + '**' + cur + '**' + end;
+            element.focus();
+        }
+    }
+
+    const toHome = () => {
+        history.replace('/');
+    }
+
 
 
     return (
         <S.WritePostingContainer>
              <S.WritePostingHeader>
-                 <S.Logo>blog</S.Logo>
-                 <S.PostingWriteButton onClick={submit}>발행</S.PostingWriteButton>
+                 <S.Logo onClick={toHome}>홈</S.Logo>
+                 <S.PostingWriteButton onClick={submit}>upload</S.PostingWriteButton>
              </S.WritePostingHeader>
              <S.WritePostingInfoContainer>
-                 <S.WritePostingCategory> {/*반복문으로 받아서 목록 띄워주기 ㄱㄱ */}
-                    <option value="">카테고리</option>
-                    <option value="학생">게임</option>
-                    <option value="회사원">코딩</option>
-                    <option value="기타">맛집</option>
-                 </S.WritePostingCategory>
                  <S.InfoContainerTitleLabel>제목:</S.InfoContainerTitleLabel>
                  <S.WritePostingTitle placeholder="제목을 입력해주세요" onChange={onTitleChange}/>
-                 <S.FileAdd>📂 파일</S.FileAdd>
+                 <S.PostingImageLabel>🖼️ 포스팅 대표 이미지 URL 입력:</S.PostingImageLabel>
+                 <S.PostingImageUrlInput placeholder="웹검색으로 이미지주소를 넣어주세요" onChange={onUrlChange}></S.PostingImageUrlInput>
              </S.WritePostingInfoContainer>
              <S.StyleMenuContainer>
-                 <S.LetterFont>
-                    <option value="">글꼴</option>
-                    <option value="학생">맑은 고딕</option>
-                    <option value="회사원">궁서체</option>
-                    <option value="기타">신명조</option>
-                 </S.LetterFont>
-                 <S.LetterFontSize>
-                    <option value="">글씨 크기</option>
-                    <option value="학생">10</option>
-                    <option value="회사원">14</option>
-                    <option value="기타">18</option>
-                 </S.LetterFontSize>
-                 <S.LetterLayout>
-                    <option value="">글 배치</option>
-                    <option value="학생">좌</option>
-                    <option value="회사원">우</option>
-                    <option value="기타">가운데</option>
-                 </S.LetterLayout>
+                 <S.h1TagButton onClick={h1TagPush}>h1</S.h1TagButton>
+                 <S.h2TagButton onClick={h2TagPush}>h2</S.h2TagButton>
+                 <S.h3TagButton onClick={h3TagPsuh}>h3</S.h3TagButton>
+                 <S.BoldButton onClick={toBold}>B</S.BoldButton>
+                 <S.ItalicButton onClick={toItalic}>i</S.ItalicButton>
              </S.StyleMenuContainer>
              <S.WriteRegionContainer>
-                 <S.WriteRegion placeholder="내용을 입력해주세요" onChange={onTextChange}/>
+                 <S.WriteRegion id="form-control" rows="35" placeholder="내용을 입력해주세요" onChange={onTextChange}/>
              </S.WriteRegionContainer>
         </S.WritePostingContainer>
     );

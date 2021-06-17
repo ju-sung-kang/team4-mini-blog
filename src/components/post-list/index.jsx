@@ -10,7 +10,7 @@ const PostList = (props) => {
   useEffect(() => {
     getCategoryName();
     getPostList();
-  },[]);
+  },[props.currentCategory]);
 
   const getCategoryName = () => {
     if(props.currentCategory){
@@ -29,7 +29,7 @@ const PostList = (props) => {
 
   const getPostList = () => {
     if(props.currentCategory){
-      db.collection('categories').doc(props.currentCategory).collection('posts')
+      db.collection('categories').doc(props.currentCategory).collection('posts').orderBy('time')
       .get()
       .then((querySnapshot) => {
         var array = [];
