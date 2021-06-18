@@ -27,8 +27,6 @@ function SettingsBlogInfo() {
 
     return (
         <S.BlogInfoContainer>
-            <Link to="/">메인</Link>
-            <S.BlogInfoTitle>🖍블로그 정보</S.BlogInfoTitle>
             <S.BlogInfoTable>
                 <S.BlogInfoTableBody>
                     <S.BlogInfoRow>
@@ -38,8 +36,9 @@ function SettingsBlogInfo() {
                                 type="text" 
                                 name="blogName" 
                                 value={blogInfo.blogName} 
-                                onChange={e => setBlogInfo({...blogInfo, blogName : e.target.value})} />
-                            <S.InputDesc>한글, 영문, 숫자 혼용가능(한글 기준 25자 이내)</S.InputDesc>
+                                onChange={e => setBlogInfo({...blogInfo, blogName : e.target.value})}
+                                placeholder="한글, 영문, 숫자 혼용가능(한글 기준 25자 이내)" />
+                            {/* <S.InputDesc>한글, 영문, 숫자 혼용가능(한글 기준 25자 이내)</S.InputDesc> */}
                         </S.BlogInfoRowData>
                     </S.BlogInfoRow>
                     <S.BlogInfoRow>
@@ -48,19 +47,21 @@ function SettingsBlogInfo() {
                             <S.BlogInfoInput
                                 name="nickName"
                                 value={blogInfo.nickName}
-                                onChange={e => setBlogInfo({...blogInfo, nickName : e.target.value})} />
-                            <S.InputDesc>한글, 영문, 숫자 혼용가능(한글 기준 10자 이내)</S.InputDesc>
+                                onChange={e => setBlogInfo({...blogInfo, nickName : e.target.value})}
+                                placeholder="한글, 영문, 숫자 혼용가능(한글 기준 10자 이내)" />
+                            {/* <S.InputDesc>한글, 영문, 숫자 혼용가능(한글 기준 10자 이내)</S.InputDesc> */}
                         </S.BlogInfoRowData>
                     </S.BlogInfoRow>
                     <S.BlogInfoRow>
                         <S.BlogInfoRowHeader>소개글</S.BlogInfoRowHeader>
                         <S.BlogInfoRowData>
-                            <S.BlogInfoTextarea />
-                            <S.InputDesc>
+                            <S.BlogInfoTextarea
+                            placeholder="블로그 프로필 영역의 프로필 이미지 아래에 반영됩니다." />
+                            {/* <S.InputDesc>
                                 블로그 프로필 영역의
                                 <br/>
                                 프로필 이미지 아래에 반영됩니다.
-                            </S.InputDesc>
+                            </S.InputDesc> */}
                         </S.BlogInfoRowData>
                     </S.BlogInfoRow>
                     <S.BlogInfoRow>

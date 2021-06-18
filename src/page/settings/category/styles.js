@@ -1,9 +1,7 @@
 import styled, {css} from "styled-components";
 
 export const CategorySettingsContainer = styled.div`
-    margin: 10px;
-    min-width : 800px;
-    width : 80%;
+    width : 100%;
     // background-color: red;
     // display: flex;
     // flex-direction: column;
@@ -14,6 +12,19 @@ export const Title = styled.h2`
 `;
 
 export const Subtitle = styled.h3`
+`;
+
+export const MainContainer = styled.div`
+    display: flex;
+    width : 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+`;
+
+export const SubContainer = styled.div`
+    margin: 20px;
+    padding-left: 40px;
+    padding-right: 40px;
 `;
 
 export const Container = styled.div`
@@ -112,7 +123,7 @@ export const CategoryAddButton = styled.button`
     width : 300px;
     height : 60px;
     border: none;
-    background-color : rgb(100, 200, 64);
+    background-color : rgb(70, 82, 115);
     text-align: left;
     color: white;
 `;
