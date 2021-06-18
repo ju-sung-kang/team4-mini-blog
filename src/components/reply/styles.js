@@ -98,6 +98,7 @@ export const WritingReply = styled.div`
     border: 1px solid #aaaaaa;
     box-sizing: border-box;
     position: relative;
+    border-radius: 0.4rem;
 `;
 
 export const WritingReplyUserName = styled.p`
@@ -109,7 +110,13 @@ export const WritingReplyNickName = styled.input`
     margin: 10px;
     height: 30px;
     width: 120px;
-    border: 1px solid #aaaaaa;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const WritingReplyPassword = styled.input`
@@ -117,7 +124,13 @@ export const WritingReplyPassword = styled.input`
     margin: 10px;
     height: 30px;
     width: 120px;
-    border: 1px solid #aaaaaa;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const WritingReplyInput = styled.textarea`
@@ -125,7 +138,13 @@ export const WritingReplyInput = styled.textarea`
     width: 95%;
     height: 100px;
     margin-left: 10px;
-    border: 1px solid #aaaaaa;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const ReplySubmitBtn = styled.button`

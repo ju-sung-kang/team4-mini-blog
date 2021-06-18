@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-// import firebase from 'firebase';
 import db from '../../firebase';
 import { useLocation, useHistory } from 'react-router-dom';
 import queryString from 'query-string';
 import * as S from './styles';
 import Reply from '../../components/reply/index';
 
+
 function ViewPosting() {
+    const marked = require('marked');
     const { search } = useLocation();
     const { categoryId } = queryString.parse(search);
     const { postId } = queryString.parse(search);
@@ -39,6 +40,9 @@ function ViewPosting() {
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
+
+        const element = document.getElementById("text-of-post");
+        element.innerHTML = marked(post.text);
     }, [])
 
 
@@ -90,9 +94,7 @@ function ViewPosting() {
                 </div>
 
             </S.PostingHeader>
-            <S.PostingBody>
-                { post.text }
-            </S.PostingBody>
+            <S.PostingBody id="text-of-post"/>
 
             <Reply categoryID={categoryId} postID={postId}/>
             

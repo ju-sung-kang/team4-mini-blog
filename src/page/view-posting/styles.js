@@ -4,7 +4,6 @@ export const PostingContainer = styled.div`
     box-sizing: border-box;
     margin-bottom: 10px;
     margin-top: 10px;
-    background-color: rgb(244, 244, 244);
     padding: 15px;
 `;
 
@@ -25,7 +24,7 @@ export const PostingDate = styled.p`
     margin-left: 20px;
 `;
 
-export const PostingBody = styled.p`
+export const PostingBody = styled.div`
     padding: 50px;
 `;
 
