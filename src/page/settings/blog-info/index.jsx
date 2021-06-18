@@ -5,7 +5,7 @@ import db from '../../../firebase';
 
 function SettingsBlogInfo() {
 
-    const [blogInfo, setBlogInfo] = useState({blogName : "", nickName: "", profileImageUrl : "", defCategory: "", bannerImageUrl: ""})
+    const [blogInfo, setBlogInfo] = useState({blogName : "", nickName: "",introduction: "", profileImageUrl : "", defCategory: "", bannerImageUrl: ""})
 
     useEffect(() => {
         db.collection('blogInfo').doc('info').get()
@@ -56,7 +56,8 @@ function SettingsBlogInfo() {
                         <S.BlogInfoRowHeader>소개글</S.BlogInfoRowHeader>
                         <S.BlogInfoRowData>
                             <S.BlogInfoTextarea
-                            placeholder="블로그 프로필 영역의 프로필 이미지 아래에 반영됩니다." />
+                            placeholder="블로그 프로필 영역의 프로필 이미지 아래에 반영됩니다."
+                            onChange={e => setBlogInfo({...blogInfo, introduction : e.target.value})} />
                             {/* <S.InputDesc>
                                 블로그 프로필 영역의
                                 <br/>
