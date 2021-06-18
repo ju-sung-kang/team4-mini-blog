@@ -10,22 +10,26 @@ export const PostingContainer = styled.div`
 export const PostingHeader = styled.div`
     margin-left: 30px;
     margin-top: 30px;
+    height: 170px;
+    border-bottom: 2px solid rgb(87, 109, 233);
 `;
 
-export const PostingCategory = styled.p``;
+export const PostingCategory = styled.p`
+    font-weight: bold;
+`;
 
 export const PostingTitle = styled.h1`
-    margin-left: 10px;
+    margin-left: -3px;
+    color: rgb(87, 109, 233);
 `;
 
 export const PostingDate = styled.p`
     color: gray;
     font-size: 15px;
-    margin-left: 20px;
 `;
 
 export const PostingBody = styled.div`
-    padding: 50px;
+    padding: 30px;
 `;
 
 export const PostingDeleteBtn = styled.button`
