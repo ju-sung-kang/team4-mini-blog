@@ -90,11 +90,11 @@ const Footer = (props) => {
     }
 
     const goToSettingsBlogInfo = () => {
-        history.push("/settings/info");
+        history.push("/settings");
     }
 
     const goToSettingsCategory = () => {
-        history.push("/settings/category");
+        history.push("/settings");
     }
 
     const img_url = `http://openweathermap.org/img/w/${weather.icon}.png`;

@@ -40,7 +40,7 @@ function ViewPosting() {
         })
 
         const element = document.getElementById("text-of-post");
-        element.innerHTML = marked(post.text)
+        element.innerHTML = marked(post.text);
     }, [])
 
     return (

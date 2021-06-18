@@ -10,11 +10,8 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path="/settings/info">    
-          <SettingsBlogInfo />
-        </Route>
-        <Route exact path="/settings/category">    
-          <SettingsCategory />
+        <Route exact path="/settings">    
+          <SettingNav/>
         </Route>
         <Route exact path="/write-posting">
           <WritePosting/>
