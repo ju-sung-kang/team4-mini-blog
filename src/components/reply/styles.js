@@ -5,7 +5,7 @@ export const Reply = styled.div`
 `;
 
 export const Buttons = styled.div`
-    margin-left: 30px;
+    margin-left: 22px;
 `;
 
 export const LikeButton = styled.button`
@@ -24,7 +24,7 @@ export const ReplyItem = styled.li`
     text-align: left;
     list-style: none;
     margin: 20px;
-    margin-left: 0px;
+    margin-left: -10px;
     border-top: 1px solid #aaaaaa;
     padding: 30px;
     padding-top: 0px;
@@ -161,7 +161,7 @@ export const ReplySubmitBtn = styled.button`
 export const ReReplyList = styled.ul``;
 
 export const ReReplyItem = styled.li`
-    margin-left: 50px;
+    margin-left: 40px;
     margin-top: 25px;
     list-style-type: '➡   ';
     list-style: none;
