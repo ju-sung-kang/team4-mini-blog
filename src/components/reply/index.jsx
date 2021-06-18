@@ -18,6 +18,8 @@ function Reply(props) {
     let [isEditing, setIsEditing] = useState([false]);  // 댓글을 수정 중인지 여부 저장
     let [replyNickName, setReplyNickName] = useState();
     let [replyPassword, setReplyPassword] = useState();
+    let [reReplyNickName, setReReplyNickName] = useState();
+    let [reReplyPassword, setReReplyPassword] = useState();
 
     // props로 주어지는 데이터
     let [categoryID, setCategoryID] = useState();
@@ -27,7 +29,6 @@ function Reply(props) {
     let [post, setPost] = useState();   // 글 정보
     let [reply, setReply] = useState(); // 댓글 정보
     let [replyID, setReplyID] = useState(); // 댓글 아이디
-    let [reReplies, setReReplies] = useState(); // 답글 정보(이중 배열)
     
 
     // 유저 아이디, 글 아이디 설정
@@ -94,27 +95,6 @@ function Reply(props) {
     }
     useEffect(()=>{
         initialize();
-    }, [reply])
-
-
-    // 답글 가져오기
-    const getReReplies = () => {
-
-        if (reply) {
-
-            let tmpReReplies = [];
-            for (let i = 0; i < reply.length; i++) {
-                if (reply[i].reRepliesCnt > 0) {
-                    tmpReReplies.push(reply[i].reReplies);
-                } else {
-                    tmpReReplies.push([]);
-                }
-            }
-            setReReplies(tmpReReplies);
-        }
-    }
-    useEffect(()=>{
-        getReReplies();
     }, [reply])
 
 
@@ -195,9 +175,15 @@ function Reply(props) {
     // 댓글 수정창 띄우기
     const showEditReply = (i) => {
 
+        const password = prompt("수정하시려면 비밀번호를 입력하세요");
+
+        if (password === reply[i].password) {
         let tmp = [...isEditing];
         tmp[i] = true;
         setIsEditing(tmp);
+        } else {
+            alert("비밀번호가 틀렸습니다");
+        }
     }
 
 
@@ -213,11 +199,13 @@ function Reply(props) {
     // 댓글 수정한 거 firebase에 반영
     const editReply = (i) => {
 
+        const inputContent = replyEditContent.replace(/\n/g, "<br/>");
+
         db.collection('categories').doc(categoryID)
         .collection("posts").doc(postID)
         .collection("replies").doc(replyID[i])
         .update({
-            text: replyEditContent
+            text: inputContent
         });
         cancelEditReply(i);
     }
@@ -232,6 +220,7 @@ function Reply(props) {
         db.collection("categories").doc(categoryID)
         .collection("posts").doc(postID)
         .collection("replies").doc(replyID[i]).delete();
+        alert("댓글이 삭제되었습니다");
         } else {
             alert("비밀번호가 틀렸습니다");
         }
@@ -241,29 +230,39 @@ function Reply(props) {
       // 댓글 전송하기
       const submitReply = () => {
 
-        const today = new Date();
-        const inputContent = replyContent.replace(/\n/g, '<br/>');
-
-        if (!replyNickName || !replyPassword) {
-            alert("닉네임, 비밀번호를 입력해주세요");
+        if (!replyContent) {
+            alert("댓글 내용을 입력하세요");
         } else {
-            db.collection("categories")
-            .doc(categoryID).collection("posts")
-            .doc(postID).collection("replies").add(
-                {
-                    heart: 0,
-                    regDate: today.toLocaleDateString(),
-                    time: Date.now(),
-                    text: inputContent,
-                    reReplies: [],
-                    reRepliesCnt: 0,
-                    nickName: replyNickName,
-                    password: replyPassword
-                }
-            )
-            document.getElementById("replyContent").value = "";
-            document.getElementById("replyNickName").value = "";
-            document.getElementById("replyPassword").value = "";
+            const today = new Date();
+            const inputContent = replyContent.replace(/\n/g, '<br/>');
+
+            if (!replyNickName || !replyPassword) {
+                alert("닉네임, 비밀번호를 입력해주세요");
+            } else {
+                db.collection("categories")
+                .doc(categoryID).collection("posts")
+                .doc(postID).collection("replies").add(
+                    {
+                        heart: 0,
+                        regDate: today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""),
+                        time: Date.now(),
+                        text: inputContent,
+                        reReplies: [],
+                        reRepliesNickName: [],
+                        reRepliesPassword: [],
+                        reRepliesRegDate: [],
+                        reRepliesCnt: 0,
+                        nickName: replyNickName,
+                        password: replyPassword
+                    }
+                )
+                document.getElementById("replyContent").value = "";
+                document.getElementById("replyNickName").value = "";
+                document.getElementById("replyPassword").value = "";
+                setReplyContent();
+                setReplyNickName();
+                setReplyPassword();
+            }
         }
       }
 
@@ -271,47 +270,94 @@ function Reply(props) {
     // 답글 전송
     const submitReReply = i => {
 
-        if (reReplies[i]) {
-            var tmpReReplies = [...reReplies[i]];
-            tmpReReplies.push(reReplyContent);
-        } else{
-            var tmpReReplies = [reReplyContent];
-        }
+        if (!reReplyContent) {
+            alert("답글 내용을 입력하세요");
+        } else {
+            const today = new Date();
+            const inputContent = reReplyContent.replace(/\n/g, "<br/>");
 
-        db.collection("categories")
-        .doc(categoryID).collection("posts")
-        .doc(postID).collection("replies")
-        .doc(replyID[i]).update(
-            {
-                reReplies : tmpReReplies,
-                reRepliesCnt : reply[i].reRepliesCnt + 1
+            if (!reReplyNickName || !reReplyPassword) {
+                alert("닉네임, 비밀번호를 입력해주세요");
+            } else {
+                if (reply[i].reReplies) {
+                    var tmpReReplies = [...reply[i].reReplies];
+                    var tmpReRepliesNickName = [...reply[i].reRepliesNickName];
+                    var tmpReRepliesPassword = [...reply[i].reRepliesPassword];
+                    var tmpReRepliesRegDate = [...reply[i].reRepliesRegDate];
+
+                    tmpReReplies.push(inputContent);
+                    tmpReRepliesNickName.push(reReplyNickName);
+                    tmpReRepliesPassword.push(reReplyPassword);
+                    tmpReRepliesRegDate.push(today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""));
+                } else {
+                    var tmpReReplies = [inputContent];
+                    var tmpReRepliesNickName = [reReplyNickName];
+                    var tmpReRepliesPassword = [reReplyPassword];
+                    var tmpReRepliesRegDate = [today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, "")];
+                }
+
+                db.collection("categories")
+                .doc(categoryID).collection("posts")
+                .doc(postID).collection("replies")
+                .doc(replyID[i]).update(
+                    {
+                        reReplies : tmpReReplies,
+                        reRepliesCnt : reply[i].reRepliesCnt + 1,
+                        reRepliesNickName : tmpReRepliesNickName,
+                        reRepliesPassword : tmpReRepliesPassword,
+                        reRepliesRegDate : tmpReRepliesRegDate
+                    }
+                ) 
+
+                document.getElementById("reReplyContent").value = "";
+                document.getElementById("reReplyNickName").value = "";
+                document.getElementById("reReplyPassword").value = "";
+
+                setReReplyContent();
+                setReReplyNickName();
+                setReReplyPassword();
+
+                let tmpShowReReply = [...showReReply];
+                tmpShowReReply[i] = !tmpShowReReply[i];
+                setShowReReply(tmpShowReReply);
             }
-        ) 
-
-        document.getElementById("reReplyContent").value = "";
-
-        let tmpShowReReply = [...showReReply];
-        tmpShowReReply[i] = !tmpShowReReply[i];
-        setShowReReply(tmpShowReReply);
+        }
     }
 
 
     // 답글 삭제
     const deleteReReply = (i, j) => {
 
-        let tmpReReplies = [...reReplies[i]];
-        tmpReReplies.splice(j, 1);
+        let password = prompt("삭제하시려면 비밀번호를 입력하세요");
 
-        
-        db.collection("categories")
-        .doc(categoryID).collection("posts")
-        .doc(postID).collection("replies")
-        .doc(replyID[i]).update(
-            {
-                reReplies : tmpReReplies,
-                reRepliesCnt : reply[i].reRepliesCnt - 1
-            }
-        ) 
+        if (password === reply[i].reRepliesPassword[j]) {
+
+            let tmpReReplies = [...reply[i].reReplies];
+            let tmpReRepliesNickName = [...reply[i].reRepliesNickName];
+            let tmpReRepliesPassword = [...reply[i].reRepliesPassword];
+            let tmpReRepliesRegDate = [...reply[i].reRepliesRegDate];
+            tmpReReplies.splice(j, 1);
+            tmpReRepliesNickName.splice(j, 1);
+            tmpReRepliesPassword.splice(j, 1);
+            tmpReRepliesRegDate.splice(j, 1);
+
+            
+            db.collection("categories")
+            .doc(categoryID).collection("posts")
+            .doc(postID).collection("replies")
+            .doc(replyID[i]).update(
+                {
+                    reReplies : tmpReReplies,
+                    reRepliesNickName : tmpReRepliesNickName,
+                    reRepliesPassword : tmpReRepliesPassword,
+                    reRepliesRegDate : tmpReRepliesRegDate,
+                    reRepliesCnt : reply[i].reRepliesCnt - 1
+                }
+            ) 
+            alert("답글이 삭제되었습니다");
+        } else {
+            alert("비밀번호가 틀렸습니다");
+        }
     }
       
     return (
@@ -347,7 +393,7 @@ function Reply(props) {
                                             <S.WritingReply>
                                                 <S.Cancel onClick={()=>{cancelEditReply(i)}}>취소</S.Cancel>
                                                 <S.WritingReplyUserName>{reply[i].nickName}</S.WritingReplyUserName>
-                                                <S.WritingReplyInput defaultValue={reply[i].text} onChange={(e)=>{setReplyEditContent(e.target.value)}}></S.WritingReplyInput><br />
+                                                <S.WritingReplyInput defaultValue={reply[i].text.replace(/<br\/>+/g, '\n')} onChange={(e)=>{setReplyEditContent(e.target.value)}}></S.WritingReplyInput><br />
                                                 <S.ReplySubmitBtn onClick={()=>{editReply(i)}}>등록</S.ReplySubmitBtn>
                                             </S.WritingReply>
                                             
@@ -369,32 +415,36 @@ function Reply(props) {
                                             </S.ReplyLikeBtn>  {reply[i].heart}
                                             <S.ReplyDelete onClick={()=>deleteReply(i)}>삭제</S.ReplyDelete>
                                             <S.ReplyEdit onClick={()=>{showEditReply(i)}}>수정</S.ReplyEdit>
+                                            <br/>
+                                            {
+                                                showReReply[i]
+                                                ?   <S.WritingReply style={{marginLeft: "20px"}}>
+                                                    <S.WritingReplyNickName type="text" id="reReplyNickName" placeholder="닉네임" onChange={(e)=>{setReReplyNickName(e.target.value)}}></S.WritingReplyNickName>
+                                                    <S.WritingReplyPassword type="password" id="reReplyPassword" placeholder="비밀번호" onChange={(e)=>{setReReplyPassword(e.target.value)}}></S.WritingReplyPassword>
+                                                    <S.WritingReplyInput id="reReplyContent" placeholder="답글 쓰기" onChange={(e)=>{setReReplyContent(e.target.value)}}></S.WritingReplyInput><br />
+                                                    <S.ReplySubmitBtn onClick={()=>submitReReply(i)}>등록</S.ReplySubmitBtn>
+                                                    </S.WritingReply>
+                                                : null
+                                            }
                                             <S.ReReplyList>
                                             {
                                                 reply[i].reReplies
                                                 ? <>{
                                                     reply[i].reReplies.map((reReply, j)=>{
                                                         return (
-                                                            <S.ReReply>
-                                                                {reReply}
+                                                            <S.ReReplyItem>
+                                                                <span style={{float: "left", marginLeft: "-30px"}}>➡   </span>
+                                                                <p style={{display: "inlineBlock", marginTop: "0"}}>{reply[i].reRepliesNickName[j]}</p>
+                                                                <S.ReReply dangerouslySetInnerHTML={{__html: reReply}} /><br/>
+                                                                <S.ReplyDate style={{marginBottom: "0", display: "inline-block"}}>{reply[i].reRepliesRegDate[j]}</S.ReplyDate>
                                                                 <S.ReplyDelete onClick={()=>deleteReReply(i, j)}>삭제</S.ReplyDelete>
-                                                            </S.ReReply>
+                                                            </S.ReReplyItem>
                                                         )
                                                     })
                                                 }</>
                                                 : null
                                             }
                                             </S.ReReplyList>
-                                            <br/>
-                                            {
-                                                showReReply[i]
-                                                ?   <S.WritingReply style={{marginLeft: "20px", height: "180px"}}>
-                                                        <br/>
-                                                        <S.WritingReplyInput id="reReplyContent" placeholder="답글 쓰기" onChange={(e)=>{setReReplyContent(e.target.value)}}></S.WritingReplyInput><br />
-                                                        <S.ReplySubmitBtn onClick={()=>submitReReply(i)}>등록</S.ReplySubmitBtn>
-                                                    </S.WritingReply>
-                                                : null
-                                            }
                                         </S.ReplyItem>
                                         )}
                                     }

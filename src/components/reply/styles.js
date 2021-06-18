@@ -25,7 +25,7 @@ export const ReplyItem = styled.li`
     list-style: none;
     margin: 20px;
     margin-left: 0px;
-    border-top: 1px black solid;
+    border-top: 1px solid #aaaaaa;
     padding: 30px;
     padding-top: 0px;
     padding-bottom: 20px;
@@ -40,7 +40,6 @@ export const ReReplyButton = styled.button`
     border: 0;
     outline: 0;
     background-color: transparent;
-    display: inline-block;
     &:hover {
         text-decoration-line: underline;
         cursor: pointer;
@@ -96,9 +95,10 @@ export const WritingReply = styled.div`
     width: 90%;
     height: 210px;
     margin-top: 20px;
-    border: 1px solid black;
+    border: 1px solid #aaaaaa;
     box-sizing: border-box;
     position: relative;
+    border-radius: 0.4rem;
 `;
 
 export const WritingReplyUserName = styled.p`
@@ -108,15 +108,29 @@ export const WritingReplyUserName = styled.p`
 
 export const WritingReplyNickName = styled.input`
     margin: 10px;
-    height: 30px;
+    height: 14%;
     width: 120px;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const WritingReplyPassword = styled.input`
     text-align: left;
     margin: 10px;
-    height: 30px;
+    height: 14%;
     width: 120px;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const WritingReplyInput = styled.textarea`
@@ -124,6 +138,13 @@ export const WritingReplyInput = styled.textarea`
     width: 95%;
     height: 100px;
     margin-left: 10px;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const ReplySubmitBtn = styled.button`
@@ -132,12 +153,23 @@ export const ReplySubmitBtn = styled.button`
     height: 30px;
     right: -1px;
     bottom: -1px;
+    background-color: rgb(87, 109, 233);
+    border: none;
+    color: white;
 `;
 
 export const ReReplyList = styled.ul``;
 
-export const ReReply = styled.li`
+export const ReReplyItem = styled.li`
     margin-left: 50px;
-    margin-top: 30px;
+    margin-top: 25px;
     list-style-type: '➡   ';
+    list-style: none;
+    border-top: 1px solid #aaaaaa;
+    padding-top: 25px;
+    padding-bottom: 0px;
+`;
+
+export const ReReply = styled.span`
+    display: inline-block;  
 `;

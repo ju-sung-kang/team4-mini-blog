@@ -10,6 +10,7 @@ export const BannerImage = styled.img`
     width: 100%;
     height: 15rem;
     object-fit: cover;
+    cursor: pointer;
 `;
 
 export const BannerText = styled.div`

@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const PostingContainer = styled.div`
     box-sizing: border-box;
-    border: 1px solid black;
     margin-bottom: 10px;
     margin-top: 10px;
+    padding: 15px;
 `;
 
 export const PostingHeader = styled.div`
@@ -26,4 +26,15 @@ export const PostingDate = styled.p`
 
 export const PostingBody = styled.div`
     padding: 50px;
+`;
+
+export const PostingDeleteBtn = styled.button`
+    border: 0;
+    outline: 0;
+    background-color: transparent;
+    float: right;
+    &:hover {
+        text-decoration-line: underline;
+        cursor: pointer;
+    }
 `;
