@@ -18,7 +18,7 @@ const WritePosting = () => {
         .add({
             text:text, 
             title:title,
-            regDate: today.toLocaleDateString(),
+            regDate: today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""),
             heart:0
         },{merge:true}).then(()=>{
             alert("작성 완료");

@@ -9,14 +9,10 @@ const Footer = (props) => {
     const history = useHistory();
     const [loc, setLoc] = useState({lat: 0, long: 0});
     const [weather, setWeather] = useState({temperature: 0, name: "", icon: ""})
-    const [today, setToday] = useState(0);
-    const [total, setTotal] = useState(0);
     const [categoryList, setCategoryList] = useState([]);
     const [user, setUser] = useState([]);
 
     useEffect(()=>{
-        setToday(today + 1);
-        setTotal(total + 1);
         getCategoryList();
         getPosition();
         getUser();

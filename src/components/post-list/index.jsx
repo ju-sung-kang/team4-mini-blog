@@ -10,7 +10,7 @@ const PostList = (props) => {
   useEffect(() => {
     getCategoryName();
     getPostList();
-  });
+  }, [props.currentCategory]);
 
   const getCategoryName = () => {
     if(props.currentCategory){
