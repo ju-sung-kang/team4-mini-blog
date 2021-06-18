@@ -45,7 +45,7 @@ function ViewPosting() {
     useEffect(() => {
         const element = document.getElementById("text-of-post");
         element.innerHTML = marked(post.text);
-    },[post])
+    },[post]);
 
 
     // 내부 댓글까지 완전히 지우기 위한 댓글 ID 저장

@@ -12,8 +12,13 @@ const WritePosting = () => {
     const [postImageUrl, setPostImageUrl] = useState("");
     const history = useHistory();
 
-    const submit = (e) => {
-        if (e.target.value === ""){
+    const submit = () => {
+        const titleElement = document.getElementById('title-control');
+        const textAreaElement = document.getElementById('form-control');
+        if (titleElement.value === "") {
+            alert("글 제목을 입력해주세요");
+        }
+        else if (textAreaElement.value === ""){
             alert("글 내용을 입력해주세요");
         }
         else{
@@ -171,7 +176,7 @@ const WritePosting = () => {
              </S.WritePostingHeader>
              <S.WritePostingInfoContainer>
                  <S.InfoContainerTitleLabel>제목:</S.InfoContainerTitleLabel>
-                 <S.WritePostingTitle placeholder="제목을 입력해주세요" onChange={onTitleChange}/>
+                 <S.WritePostingTitle id="title-control" placeholder="제목을 입력해주세요" onChange={onTitleChange}/>
                  <S.PostingImageLabel>🖼️ 포스팅 대표 이미지 URL 입력:</S.PostingImageLabel>
                  <S.PostingImageUrlInput placeholder="웹검색으로 이미지주소를 넣어주세요" onChange={onUrlChange}></S.PostingImageUrlInput>
              </S.WritePostingInfoContainer>
