@@ -9,11 +9,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/settings">    
-<<<<<<< HEAD
           <SettingsNav/>
-=======
-          <SettingsNav />
->>>>>>> 84b6ea202042ed07e68ba99b3882b256ee887800
         </Route>
         <Route exact path="/write-posting">
           <WritePosting/>

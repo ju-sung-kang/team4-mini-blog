@@ -38,19 +38,13 @@ function ViewPosting() {
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
-<<<<<<< HEAD
     }, []);
 
     useEffect(() => {
         const element = document.getElementById("text-of-post");
         element.innerHTML = marked(post.text);
-    },[post])
-=======
+    },[post]);
 
-        const element = document.getElementById("text-of-post");
-        element.innerHTML = marked(post.text);
-    }, [])
->>>>>>> 2c0cf4e813d4b588f00f2347bd712c8f43a415ab
 
     return (
         <S.PostingContainer>

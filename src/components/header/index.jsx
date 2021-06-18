@@ -38,11 +38,7 @@ const Header = () => {
     return (
         <S.HeaderContainer>
             <S.BannerText>{blogName} &nbsp; <S.nameText>ㅡ</S.nameText> &nbsp;by {userName}.</S.BannerText>
-<<<<<<< HEAD
             <S.BannerImage src={bannerImage} onClick={goToMain}/>
-=======
-            <S.BannerImage src={bannerImage}/>
->>>>>>> 2c0cf4e813d4b588f00f2347bd712c8f43a415ab
         </S.HeaderContainer>
     );
 }
