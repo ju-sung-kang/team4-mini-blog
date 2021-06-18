@@ -2,10 +2,11 @@ import styled from "styled-components";
 
 export const BlogInfoContainer = styled.form`
     margin: 10px;
-    min-width : 800px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+
 `;
 
 export const BlogInfoTitle = styled.h2`
@@ -16,7 +17,8 @@ export const BlogInfoTitle = styled.h2`
 
 export const BlogInfoTable = styled.table`
     border-collapse: collapse;
-    
+    width: 100%;
+
 // display: flex;
 // flex-direction: column;
 // background-color : red;
@@ -30,7 +32,6 @@ export const BlogInfoTableBody = styled.tbody`
 export const BlogInfoRow = styled.tr`
     text-align: left;
     border-bottom: 0.5px solid #ccc;
-    
     font: 12px/1.5em "돋움",Dotum,Helvetica,Sans-serif;
 // display: flex;
 // flex-direction: column;
@@ -39,13 +40,21 @@ export const BlogInfoRow = styled.tr`
 
 
 export const BlogInfoRowHeader = styled.th`
-    width : 200px;
+    max-width : 150px;
+    min-width: 50px;
+    width: 20%;
     color : #424242;
+    word-wrap: break-word;
     
 `;
 
 export const BlogInfoRowData = styled.td`
     // display: table-cell;
+    max-width : 450px;
+    min-width: 150px;
+    width: 70%;
+    display: flex;
+    flex-wrap: wrap;
     
 `;
 
@@ -69,12 +78,19 @@ export const BlogUrl = styled.p`
 export const BlogInfoInput = styled.input`
     margin-top: 30px;
     margin-bottom: 30px;
-    width : 300px;
+    max-width : 500px;
+    min-width : 300px;
+    width: 60%;
     border: 1px solid #ccc;
 `;
 
 export const BlogInfoTextarea = styled.textarea`
-    width : 300px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width : 500px;
+    min-width : 300px;
+    width: 60%;
+    height: 120px;
     border: 1px solid #ccc;    
 `;
 
