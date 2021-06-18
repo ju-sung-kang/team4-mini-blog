@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import db from '../../firebase.js';
 import * as S from './styles';
 
 const Header = () => {
+    const history = useHistory();
     const [bannerImage, setBannerImage] = useState();
     const [blogName, setBlogName] = useState();
     const [userName, setUserName] = useState();
@@ -29,10 +31,14 @@ const Header = () => {
         });
     }
 
+    const goToMain = () => {
+        history.push('/');
+    }
+
     return (
         <S.HeaderContainer>
             <S.BannerText>{blogName} &nbsp; <S.nameText>ㅡ</S.nameText> &nbsp;by {userName}.</S.BannerText>
-            <S.BannerImage src={bannerImage}/>
+            <S.BannerImage src={bannerImage} onClick={goToMain}/>
         </S.HeaderContainer>
     );
 }
