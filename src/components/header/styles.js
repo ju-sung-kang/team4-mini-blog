@@ -2,8 +2,8 @@ import styled from 'styled-components';
 
 export const HeaderContainer = styled.div`
     width: 100%;
-    height: 15rem;
-    position: relative;
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 export const BannerImage = styled.img`
@@ -13,12 +13,18 @@ export const BannerImage = styled.img`
 `;
 
 export const BannerText = styled.div`
-    border: 0.3rem solid white;
-    color: white;
-    font-size: 3rem;
-    font-weight: 700;
-    position: absolute;
-    top: 50%;
-    left: 60%;
-    transform: translate( 0%, -50% );
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: 2px;
+    color: #626262;
+`;
+
+export const nameText = styled.div`
+    font-size: 1rem;
+    font-weight: 300;
+    color: #8c8c8c;
+    padding-bottom: 1px;
 `;

@@ -8,11 +8,12 @@ export const PostListContainer = styled.div`
 
 export const PostListTitle = styled.div`
     width: 100%;
-    height: 4rem;
-    text-align: center;
-    font-size: 2rem;
-    padding-top: 1rem;
+    font-size: 1rem;
+    margin-top: 3rem;
+    border-bottom: 2px solid black;
 `;
+
+export const Bold = styled.strong``;
 
 export const ContentContainer = styled.div`
     display: flex;
@@ -26,27 +27,45 @@ export const NoPost = styled.span`
 `;
 
 export const PostContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
     width: 11rem;
-    height: 11rem;
-    padding-left: 1px;
-    padding-top: 1px;
+    height: 15rem;
     font-size: 2rem;
-    margin: 1rem 0.7rem;
-    &: hover {
-        background-color: gray;
-    }
-    border: 1px solid gray;
+    margin: 1rem 0.25rem;
 `;
 
-export const PostAdd = styled.div`
-    width: 11rem;
-    height: 11rem;
-    padding-left: 1px;
-    padding-top: 1px;
-    font-size: 2rem;
-    margin: 1rem 0.7rem;
-    &: hover {
-        background-color: gray;
-    }
+export const PostImage = styled.img`
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
     border: 1px solid gray;
+    cursor: pointer;
+`;
+
+export const PostTitle = styled.div`
+    width: 100%;
+    font-weight: 700;
+    font-size: 0.9rem;
+    &: hover{
+        text-decoration: underline;
+    }
+    margin-left: 0.5rem;
+    cursor: pointer;
+`;
+
+export const PostRegDate = styled.div`
+    width: 100%;
+    color: gray;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+`;
+
+export const PostAdd = styled.img`
+    width: 10rem;
+    height: 10rem;
+    margin: 1rem 0.25rem;
+    cursor: pointer;
+    border-radius: 50%;
 `;

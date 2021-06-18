@@ -19,8 +19,9 @@ const Main = () => {
     db.collection('blogInfo').doc('info')
     .get()
     .then((doc) => {
-          const tmp = doc.data();
-          setCurCategory(tmp.defCategory);
+        const tmp = doc.data();
+        setCurCategory(tmp.defCategory);
+        console.log("main def category getting success");
     }).catch((error) => {
         console.log("Error getting document:", error);
     });
@@ -32,7 +33,8 @@ const Main = () => {
   }
 
   return (
-
+    <S.MainContainerContainerContainer>
+    <S.MainContainerContainer>
     <S.MainContainer>
         <Header/>
         <Switch>
@@ -46,6 +48,8 @@ const Main = () => {
         <Footer currentCategory={curCategory} categoryHandler={categoryHandler}/>
         <S.MarginBottom/>
     </S.MainContainer>
+    </S.MainContainerContainer>
+    </S.MainContainerContainerContainer>
 
   );
 };

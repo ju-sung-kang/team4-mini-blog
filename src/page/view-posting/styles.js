@@ -24,6 +24,6 @@ export const PostingDate = styled.p`
     margin-left: 20px;
 `;
 
-export const PostingBody = styled.p`
+export const PostingBody = styled.div`
     padding: 50px;
 `;

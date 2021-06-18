@@ -32,6 +32,7 @@ const Footer = (props) => {
                 array.push({categoryName: tmp.name, categoryId: doc.id});
             });
             setCategoryList(array);
+            console.log("footer category list getting success");
         })
         .catch((error) => {
             console.log("Error getting documents: ", error);
@@ -53,6 +54,7 @@ const Footer = (props) => {
                     name: tmp.nickName,
                     intro: tmp.introduction
                 });
+                console.log("footer user data getting success");
             }
             else {
                 console.log("No such document!");
@@ -88,11 +90,11 @@ const Footer = (props) => {
     }
 
     const goToSettingsBlogInfo = () => {
-        history.push("/settings/info")
+        history.push("/settings");
     }
 
     const goToSettingsCategory = () => {
-        history.push("/settings/category")
+        history.push("/settings");
     }
 
     const img_url = `http://openweathermap.org/img/w/${weather.icon}.png`;
@@ -113,21 +115,21 @@ const Footer = (props) => {
             </S.Profile>
             <S.Category>
                 <S.CategoryLabel>카테고리</S.CategoryLabel>
+                <S.CategoryUl>
                 {categoryList.length === 0 ? (
                     <S.NoCategory>설정에서 카테고리를 추가해주세요!</S.NoCategory>
-                ) : (
-                  categoryList.map((category) => (
-                    <S.CategoryTitle key={category.categoryId} onClick={()=>categoryClick(category.categoryId)}>
-                        {category.categoryName}
-                    </S.CategoryTitle>
-                  ))
+                    ) : (
+                    categoryList.map((category) => (
+                        <S.CategoryTitle key={category.categoryId} onClick={()=>categoryClick(category.categoryId)}>
+                            {category.categoryName}
+                        </S.CategoryTitle>
+                    ))
                 )}
+                </S.CategoryUl>
             </S.Category>
             <S.Weather>
-                <h4>현재 지역 날씨</h4>
-                <img src={img_url} alt="weather_icon" />
-                <h5>온도: {weather.temperature}</h5>
-                <h5>날씨: {weather.name}</h5>
+                <S.WeatherTemperature>{weather.name} / {weather.temperature}℃</S.WeatherTemperature>
+                <S.WeatherImage src={img_url} alt="weather_icon"/>
             </S.Weather>
         </S.FooterContainer>
     )

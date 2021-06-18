@@ -12,35 +12,40 @@ export const WritePostingHeader = styled.div`
     height: 3rem;
     border-bottom: 1px solid #a0a0a0;
     align-items: center;
+    background-color: #576DE9;
 `;
 
 export const PostingWriteButton = styled.div`
-    text-align: center;
-    width: 2.5rem;
-    height: 1.7rem;
-    position: absolute;
-    left: 95%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0rem 1.2rem;
+    height: 3rem;
     color: white;
-    background-color: #2DB400;
-    font-weight: 600;
+    background-color: #002D93;
+    font-weight: 700;
     font-size: 1.2rem;
     &: hover {
-        background-color: #008000;
+        background-color: #00096F;
     }
-    border-radius: 0.5rem;
     cursor: pointer;
+    margin-left: auto;
 `;
 
 export const Logo = styled.div`
-    text-align: center;
-    width: 2.5rem;
-    height: 1.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
     color: white;
-    background-color: #2DB400;
-    font-weight: 600;
+    background-color: #002D93;
+    font-weight: 700;
     font-size: 1.2rem;
-    margin-left: 1.2rem;
-    
+    padding: 0rem 1.2rem;
+    &: hover{
+        background-color: #00096F;
+    }
+    cursor: pointer;
 `;
 
 
@@ -49,44 +54,133 @@ export const WritePostingInfoContainer = styled.div`
     display: flex;
     align-items: center;
     border-bottom: 1px solid #a0a0a0;
-    height: 3.5rem;
-`;
-
-export const WritePostingCategory = styled.select`
-    width: 5rem;
-    height: 2.5rem;
-    margin-left: 1.2rem;
+    height: 3.2rem;
 `;
 
 export const InfoContainerTitleLabel = styled.div`
     height: 2.5rem;
-    margin-left: 1rem;
-    text-align: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
     font-size: 1rem;
-    padding-top: 1rem;
+    margin-left: 1rem;
 `;
 
 export const WritePostingTitle = styled.input`
-    height: 2.5rem;
-    width: 50%;
+    height: 1.8rem;
+    width: 35%;
     margin-left: 0.5rem;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
-export const FileAdd = styled.div`
-    height: 1.6rem;
-    width: 4rem;
-    margin-left: 1rem;
+export const PostingImageLabel = styled.div`
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
     font-size: 1rem;
-    padding-top: 0.35rem;
-    border: 1px solid gray;
-    border-radius: 0.5rem;
+    margin-left: 1rem;
+`;
+
+export const PostingImageUrlInput = styled.input`
+    height: 1.8rem;
+    width: 20%;
+    margin-left: 2rem;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 
 //letter styling
+
+export const h1TagButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.8rem;
+    margin-left: 1rem;
+    background-color: #f4f4f4;
+    &: hover {
+        background-color: #eaeaea;
+    }
+    border: 1px solid gray;
+    border-radius: 0.25rem 0rem 0rem 0.25rem;
+    cursor: pointer;
+`;
+
+export const h2TagButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.8rem;
+    background-color: #f4f4f4;
+    &: hover {
+        background-color: #eaeaea;
+    }
+    border: 1px solid gray;
+    cursor: pointer;
+`;
+
+export const h3TagButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.8rem;
+    background-color: #f4f4f4;
+    &: hover {
+        background-color: #eaeaea;
+    }
+    border: 1px solid gray;
+    border-radius: 0rem 0.25rem 0.25rem 0rem;
+    cursor: pointer;
+`;
+
+export const BoldButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.8rem;
+    margin-left: 1rem;
+    background-color: #f4f4f4;
+    &: hover {
+        background-color: #eaeaea;
+    }
+    border: 1px solid gray;
+    border-radius: 0.25rem 0rem 0rem 0.25rem;
+    cursor: pointer;
+`;
+
+export const ItalicButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 1.8rem;
+    background-color: #f4f4f4;
+    &: hover {
+        background-color: #eaeaea;
+    }
+    border: 1px solid gray;
+    border-radius: 0rem 0.25rem 0.25rem 0rem;
+    cursor: pointer;
+`;
 export const StyleMenuContainer = styled.div`
     display: flex;
     height: 3rem;
@@ -122,4 +216,12 @@ export const WriteRegionContainer = styled.div`
 export const WriteRegion = styled.textarea`
     width: 50%;
     height: 50rem;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
+    margin-top: 0.6rem;
 `;
