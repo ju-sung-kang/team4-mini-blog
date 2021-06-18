@@ -14,7 +14,7 @@ export const Profile = styled.div`
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    width: 25%;
+    width: 15rem;
     border: 1px solid #D5D5D5;
     border-radius: 1rem;
     background-color: #FDFDFB;
@@ -22,7 +22,7 @@ export const Profile = styled.div`
 `;
 
 export const ProfileImage = styled.img`
-    width: 80%;
+    width: 12rem;
     height: 12rem;
     object-fit: cover;
     border-radius: 1rem;
@@ -88,7 +88,8 @@ export const CategorySettings = styled.div`
 
 // category
 export const Category = styled.div`
-    width: 15%;
+    width: 10rem;
+    margin-right: 1.5rem;
 `;
 
 export const CategoryLabel = styled.div`
@@ -113,8 +114,10 @@ export const CategoryTitle = styled.li`
     font-size: 0.8rem;
 `;
 
+//weather
+
 export const Weather = styled.div`
-    width: 20%;
+    width: 10rem;
 `;
 
 export const WeatherLabel = styled.div`

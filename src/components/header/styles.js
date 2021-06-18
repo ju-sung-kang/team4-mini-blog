@@ -13,9 +13,18 @@ export const BannerImage = styled.img`
 `;
 
 export const BannerText = styled.div`
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 1rem;
+    font-weight: 500;
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    padding-bottom: 2px;
+    color: #626262;
+`;
+
+export const nameText = styled.div`
+    font-size: 1rem;
+    font-weight: 300;
+    color: #8c8c8c;
+    padding-bottom: 1px;
 `;

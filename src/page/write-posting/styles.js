@@ -45,7 +45,7 @@ export const Logo = styled.div`
     &: hover{
         background-color: #00096F;
     }
-    
+    cursor: pointer;
 `;
 
 
@@ -119,6 +119,7 @@ export const h1TagButton = styled.div`
     }
     border: 1px solid gray;
     border-radius: 0.25rem 0rem 0rem 0.25rem;
+    cursor: pointer;
 `;
 
 export const h2TagButton = styled.div`
@@ -132,6 +133,7 @@ export const h2TagButton = styled.div`
         background-color: #eaeaea;
     }
     border: 1px solid gray;
+    cursor: pointer;
 `;
 
 export const h3TagButton = styled.div`
@@ -146,6 +148,7 @@ export const h3TagButton = styled.div`
     }
     border: 1px solid gray;
     border-radius: 0rem 0.25rem 0.25rem 0rem;
+    cursor: pointer;
 `;
 
 export const BoldButton = styled.div`
@@ -161,6 +164,7 @@ export const BoldButton = styled.div`
     }
     border: 1px solid gray;
     border-radius: 0.25rem 0rem 0rem 0.25rem;
+    cursor: pointer;
 `;
 
 export const ItalicButton = styled.div`
@@ -175,6 +179,7 @@ export const ItalicButton = styled.div`
     }
     border: 1px solid gray;
     border-radius: 0rem 0.25rem 0.25rem 0rem;
+    cursor: pointer;
 `;
 export const StyleMenuContainer = styled.div`
     display: flex;

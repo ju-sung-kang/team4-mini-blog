@@ -5,6 +5,7 @@ import * as S from './styles';
 const Header = () => {
     const [bannerImage, setBannerImage] = useState();
     const [blogName, setBlogName] = useState();
+    const [userName, setUserName] = useState();
     useEffect(() => {
         getInfo();
     }, [])
@@ -17,7 +18,8 @@ const Header = () => {
                 const tmp = doc.data();
                 setBannerImage(tmp.bannerImageUrl);
                 setBlogName(tmp.blogName);
-                console.log("header banner image getting success!")
+                setUserName(tmp.nickName);
+                console.log("header banner image getting success!");
             }
             else {
                 console.log("Error getting banner image!");
@@ -29,7 +31,7 @@ const Header = () => {
 
     return (
         <S.HeaderContainer>
-            <S.BannerText>{blogName}</S.BannerText>
+            <S.BannerText>{blogName} &nbsp; <S.nameText>ㅡ</S.nameText> &nbsp;by {userName}.</S.BannerText>
             <S.BannerImage src={bannerImage}/>
         </S.HeaderContainer>
     );

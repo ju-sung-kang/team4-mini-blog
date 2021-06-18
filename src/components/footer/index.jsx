@@ -128,9 +128,8 @@ const Footer = (props) => {
                 </S.CategoryUl>
             </S.Category>
             <S.Weather>
-                <S.WeatherLabel>날씨 정보</S.WeatherLabel>
-                <S.WeatherImage src={img_url} alt="weather_icon"/>
                 <S.WeatherTemperature>{weather.name} / {weather.temperature}℃</S.WeatherTemperature>
+                <S.WeatherImage src={img_url} alt="weather_icon"/>
             </S.Weather>
         </S.FooterContainer>
     )
