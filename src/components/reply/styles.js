@@ -108,7 +108,7 @@ export const WritingReplyUserName = styled.p`
 
 export const WritingReplyNickName = styled.input`
     margin: 10px;
-    height: 30px;
+    height: 14%;
     width: 120px;
     border: 2px solid gray;
     border-radius: 0.4rem;
@@ -122,7 +122,7 @@ export const WritingReplyNickName = styled.input`
 export const WritingReplyPassword = styled.input`
     text-align: left;
     margin: 10px;
-    height: 30px;
+    height: 14%;
     width: 120px;
     border: 2px solid gray;
     border-radius: 0.4rem;

@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/settings">    
-          <SettingsNav />
+          <SettingsNav/>
         </Route>
         <Route exact path="/write-posting">
           <WritePosting/>
