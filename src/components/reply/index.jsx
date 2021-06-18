@@ -230,32 +230,39 @@ function Reply(props) {
       // 댓글 전송하기
       const submitReply = () => {
 
-        const today = new Date();
-        const inputContent = replyContent.replace(/\n/g, '<br/>');
-
-        if (!replyNickName || !replyPassword) {
-            alert("닉네임, 비밀번호를 입력해주세요");
+        if (!replyContent) {
+            alert("댓글 내용을 입력하세요");
         } else {
-            db.collection("categories")
-            .doc(categoryID).collection("posts")
-            .doc(postID).collection("replies").add(
-                {
-                    heart: 0,
-                    regDate: today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""),
-                    time: Date.now(),
-                    text: inputContent,
-                    reReplies: [],
-                    reRepliesNickName: [],
-                    reRepliesPassword: [],
-                    reRepliesRegDate: [],
-                    reRepliesCnt: 0,
-                    nickName: replyNickName,
-                    password: replyPassword
-                }
-            )
-            document.getElementById("replyContent").value = "";
-            document.getElementById("replyNickName").value = "";
-            document.getElementById("replyPassword").value = "";
+            const today = new Date();
+            const inputContent = replyContent.replace(/\n/g, '<br/>');
+
+            if (!replyNickName || !replyPassword) {
+                alert("닉네임, 비밀번호를 입력해주세요");
+            } else {
+                db.collection("categories")
+                .doc(categoryID).collection("posts")
+                .doc(postID).collection("replies").add(
+                    {
+                        heart: 0,
+                        regDate: today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""),
+                        time: Date.now(),
+                        text: inputContent,
+                        reReplies: [],
+                        reRepliesNickName: [],
+                        reRepliesPassword: [],
+                        reRepliesRegDate: [],
+                        reRepliesCnt: 0,
+                        nickName: replyNickName,
+                        password: replyPassword
+                    }
+                )
+                document.getElementById("replyContent").value = "";
+                document.getElementById("replyNickName").value = "";
+                document.getElementById("replyPassword").value = "";
+                setReplyContent();
+                setReplyNickName();
+                setReplyPassword();
+            }
         }
       }
 
@@ -263,49 +270,57 @@ function Reply(props) {
     // 답글 전송
     const submitReReply = i => {
 
-        const today = new Date();
-        const inputContent = reReplyContent.replace(/\n/g, "<br/>");
-
-        if (!reReplyNickName || !reReplyPassword) {
-            alert("닉네임, 비밀번호를 입력해주세요");
+        if (!reReplyContent) {
+            alert("답글 내용을 입력하세요");
         } else {
-            if (reply[i].reReplies) {
-                var tmpReReplies = [...reply[i].reReplies];
-                var tmpReRepliesNickName = [...reply[i].reRepliesNickName];
-                var tmpReRepliesPassword = [...reply[i].reRepliesPassword];
-                var tmpReRepliesRegDate = [...reply[i].reRepliesRegDate];
+            const today = new Date();
+            const inputContent = reReplyContent.replace(/\n/g, "<br/>");
 
-                tmpReReplies.push(inputContent);
-                tmpReRepliesNickName.push(reReplyNickName);
-                tmpReRepliesPassword.push(reReplyPassword);
-                tmpReRepliesRegDate.push(today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""));
+            if (!reReplyNickName || !reReplyPassword) {
+                alert("닉네임, 비밀번호를 입력해주세요");
             } else {
-                var tmpReReplies = [inputContent];
-                var tmpReRepliesNickName = [reReplyNickName];
-                var tmpReRepliesPassword = [reReplyPassword];
-                var tmpReRepliesRegDate = [today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, "")];
-            }
+                if (reply[i].reReplies) {
+                    var tmpReReplies = [...reply[i].reReplies];
+                    var tmpReRepliesNickName = [...reply[i].reRepliesNickName];
+                    var tmpReRepliesPassword = [...reply[i].reRepliesPassword];
+                    var tmpReRepliesRegDate = [...reply[i].reRepliesRegDate];
 
-            db.collection("categories")
-            .doc(categoryID).collection("posts")
-            .doc(postID).collection("replies")
-            .doc(replyID[i]).update(
-                {
-                    reReplies : tmpReReplies,
-                    reRepliesCnt : reply[i].reRepliesCnt + 1,
-                    reRepliesNickName : tmpReRepliesNickName,
-                    reRepliesPassword : tmpReRepliesPassword,
-                    reRepliesRegDate : tmpReRepliesRegDate
+                    tmpReReplies.push(inputContent);
+                    tmpReRepliesNickName.push(reReplyNickName);
+                    tmpReRepliesPassword.push(reReplyPassword);
+                    tmpReRepliesRegDate.push(today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""));
+                } else {
+                    var tmpReReplies = [inputContent];
+                    var tmpReRepliesNickName = [reReplyNickName];
+                    var tmpReRepliesPassword = [reReplyPassword];
+                    var tmpReRepliesRegDate = [today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, "")];
                 }
-            ) 
 
-            document.getElementById("reReplyContent").value = "";
-            document.getElementById("reReplyNickName").value = "";
-            document.getElementById("reReplyPassword").value = "";
+                db.collection("categories")
+                .doc(categoryID).collection("posts")
+                .doc(postID).collection("replies")
+                .doc(replyID[i]).update(
+                    {
+                        reReplies : tmpReReplies,
+                        reRepliesCnt : reply[i].reRepliesCnt + 1,
+                        reRepliesNickName : tmpReRepliesNickName,
+                        reRepliesPassword : tmpReRepliesPassword,
+                        reRepliesRegDate : tmpReRepliesRegDate
+                    }
+                ) 
 
-            let tmpShowReReply = [...showReReply];
-            tmpShowReReply[i] = !tmpShowReReply[i];
-            setShowReReply(tmpShowReReply);
+                document.getElementById("reReplyContent").value = "";
+                document.getElementById("reReplyNickName").value = "";
+                document.getElementById("reReplyPassword").value = "";
+
+                setReReplyContent();
+                setReReplyNickName();
+                setReReplyPassword();
+
+                let tmpShowReReply = [...showReReply];
+                tmpShowReReply[i] = !tmpShowReReply[i];
+                setShowReReply(tmpShowReReply);
+            }
         }
     }
 
