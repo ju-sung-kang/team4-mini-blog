@@ -43,12 +43,7 @@ function ViewPosting() {
     useEffect(() => {
         const element = document.getElementById("text-of-post");
         element.innerHTML = marked(post.text);
-<<<<<<< HEAD
     },[post]);
-
-=======
-    },[post])
->>>>>>> 2d2f267490fdd5c1cbccc7f8cb3cb0ecef3ec3b0
 
     return (
         <S.PostingContainer>
