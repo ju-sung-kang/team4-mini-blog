@@ -40,10 +40,12 @@ function ViewPosting() {
         }).catch((error) => {
             console.log("Error getting document:", error);
         })
+    }, []);
 
+    useEffect(() => {
         const element = document.getElementById("text-of-post");
         element.innerHTML = marked(post.text);
-    }, [])
+    },[post])
 
 
     // 내부 댓글까지 완전히 지우기 위한 댓글 ID 저장
