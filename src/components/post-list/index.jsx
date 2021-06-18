@@ -9,14 +9,14 @@ import postAddImageHover from '../../assets/postaddhover.png';
 
 const PostList = (props) => {
   const history = useHistory();
-  const [postList, setPostList] = useState([{title:'가져오는 중입니다', postId: 'default'}]);
+  const [postList, setPostList] = useState([]);
   const [categoryName, setCategoryName] = useState('가져오는 중입니다');
   const [categoryPostNum, setCategoryPostNum] = useState(0);
   const [isPostAddImageHover, setHover] = useState(false);
   useEffect(() => {
     getCategoryName();
     getPostList();
-  },[props.currentCategory]);
+  },[props.currentCategory, categoryPostNum]);
 
   const getCategoryName = () => {
     if(props.currentCategory){
@@ -24,9 +24,7 @@ const PostList = (props) => {
       .get()
       .then((doc) => {
         const name = doc.data().name;
-        const num = doc.data().numOfPost;
         setCategoryName(name);
-        setCategoryPostNum(num);
         console.log("post list category name getting success");
       })
       .catch((error) => {
@@ -40,6 +38,8 @@ const PostList = (props) => {
       db.collection('categories').doc(props.currentCategory).collection('posts').orderBy('time')
       .get()
       .then((querySnapshot) => {
+        const num = querySnapshot.size;
+        setCategoryPostNum(num);
         var array = [];
         querySnapshot.forEach((doc) => {
             const tmp = doc.data();
@@ -88,6 +88,9 @@ const PostList = (props) => {
     return txt;
   }
 
+  const imageLoadError = (e) => {
+    e.target.src = defPostImage;
+  }
 
 
   return (
@@ -100,7 +103,8 @@ const PostList = (props) => {
               postList.map((post) => (
                 <S.PostContainer>
                   <S.PostImage 
-                  src={post.postImageUrl ? post.postImageUrl : defPostImage}
+                  src={post.postImageUrl}
+                  onError={imageLoadError}
                   id={post.postId} 
                   key={post.postImageUrl} 
                   onClick={postClick}/>
