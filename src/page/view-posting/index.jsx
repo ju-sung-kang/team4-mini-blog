@@ -44,6 +44,7 @@ function ViewPosting() {
     }, []);
 
     useEffect(() => {
+<<<<<<< HEAD
         setHtmlObject({__html : marked(post.text)});
         console.log(marked(post.text));
     },[post, marked]);
@@ -85,6 +86,11 @@ function ViewPosting() {
             alert("삭제에 실패했습니다")
         }
     }
+=======
+        const element = document.getElementById("text-of-post");
+        element.innerHTML = marked(post.text);
+    },[post]);
+>>>>>>> 1553292559b2e7849ef8b1a6a292ad8459e00a51
 
     return (
         <S.PostingContainer>
