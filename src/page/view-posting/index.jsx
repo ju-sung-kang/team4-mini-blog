@@ -8,6 +8,20 @@ import Reply from '../../components/reply/index';
 
 function ViewPosting() {
     const marked = require('marked');
+    const hljs = require('highlight.js');
+    marked.setOptions({
+        renderer: new marked.Renderer(),
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false,
+        highlight: function (code) {
+            return hljs.highlightAuto(code).value;
+        }
+    })
     const { search } = useLocation();
     const { categoryId } = queryString.parse(search);
     const { postId } = queryString.parse(search);
@@ -41,14 +55,8 @@ function ViewPosting() {
     }, []);
 
     useEffect(() => {
-        const element = document.getElementById("text-of-post");
-        element.innerHTML = marked(post.text);
-<<<<<<< HEAD
-    },[post]);
-
-=======
-    },[post])
->>>>>>> 2d2f267490fdd5c1cbccc7f8cb3cb0ecef3ec3b0
+        document.getElementById("text-of-post").innerHTML=marked(post.text);
+    },[post, marked, hljs]);
 
     return (
         <S.PostingContainer>
