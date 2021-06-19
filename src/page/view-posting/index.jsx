@@ -8,20 +8,7 @@ import Reply from '../../components/reply/index';
 
 function ViewPosting() {
     const marked = require('marked');
-    const hljs = require('highlight.js');
-    marked.setOptions({
-        renderer: new marked.Renderer(),
-        gfm: true,
-        tables: true,
-        breaks: false,
-        pedantic: false,
-        sanitize: false,
-        smartLists: true,
-        smartypants: false,
-        highlight: function (code) {
-            return hljs.highlightAuto(code).value;
-        }
-    })
+    const [htmlObject, setHtmlObject] = useState();
     const { search } = useLocation();
     const { categoryId } = queryString.parse(search);
     const { postId } = queryString.parse(search);
@@ -57,13 +44,9 @@ function ViewPosting() {
     }, []);
 
     useEffect(() => {
-<<<<<<< HEAD
-        document.getElementById("text-of-post").innerHTML=marked(post.text);
-    },[post, marked, hljs]);
-=======
-        const element = document.getElementById("text-of-post");
-        element.innerHTML = marked(post.text);
-    },[post]);
+        setHtmlObject({__html : marked(post.text)});
+        console.log(marked(post.text));
+    },[post, marked]);
 
 
     // 내부 댓글까지 완전히 지우기 위한 댓글 ID 저장
@@ -102,7 +85,6 @@ function ViewPosting() {
             alert("삭제에 실패했습니다")
         }
     }
->>>>>>> 238a07ab2b2d098e93666427d8da333411ad98c4
 
     return (
         <S.PostingContainer>
@@ -115,7 +97,7 @@ function ViewPosting() {
                 </div>
 
             </S.PostingHeader>
-            <S.PostingBody id="text-of-post"/>
+            <S.PostingBody id="text-of-post" dangerouslySetInnerHTML={htmlObject}/>
 
             <Reply categoryID={categoryId} postID={postId}/>
             
