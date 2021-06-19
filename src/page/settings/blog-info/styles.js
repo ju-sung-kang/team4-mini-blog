@@ -81,7 +81,13 @@ export const BlogInfoInput = styled.input`
     max-width : 500px;
     min-width : 300px;
     width: 60%;
-    border: 1px solid #ccc;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const BlogInfoTextarea = styled.textarea`
@@ -91,7 +97,13 @@ export const BlogInfoTextarea = styled.textarea`
     min-width : 300px;
     width: 60%;
     height: 120px;
-    border: 1px solid #ccc;    
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    } 
 `;
 
 export const BlogMainCategorySelect = styled.select`
