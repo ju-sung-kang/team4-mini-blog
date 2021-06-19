@@ -8,6 +8,7 @@ import Reply from '../../components/reply/index';
 
 function ViewPosting() {
     const marked = require('marked');
+    const [htmlObject, setHtmlObject] = useState();
     const { search } = useLocation();
     const { categoryId } = queryString.parse(search);
     const { postId } = queryString.parse(search);
@@ -43,9 +44,8 @@ function ViewPosting() {
     }, []);
 
     useEffect(() => {
-        const element = document.getElementById("text-of-post");
-        element.innerHTML = marked(post.text);
-    },[post]);
+        setHtmlObject({__html : marked(post.text)});
+    },[post, marked]);
 
 
     // 내부 댓글까지 완전히 지우기 위한 댓글 ID 저장
@@ -85,6 +85,7 @@ function ViewPosting() {
         }
     }
 
+
     return (
         <S.PostingContainer>
             <S.PostingHeader>
@@ -96,7 +97,7 @@ function ViewPosting() {
                 </div>
 
             </S.PostingHeader>
-            <S.PostingBody id="text-of-post"/>
+            <S.PostingBody id="text-of-post" dangerouslySetInnerHTML={htmlObject}/>
 
             <Reply categoryID={categoryId} postID={postId}/>
             

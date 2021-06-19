@@ -15,6 +15,7 @@ const WritePosting = () => {
     const submit = () => {
         const titleElement = document.getElementById('title-control');
         const textAreaElement = document.getElementById('form-control');
+        const urlElement = document.getElementById('url-control');
         if (titleElement.value === "") {
             alert("글 제목을 입력해주세요");
         }
@@ -25,12 +26,12 @@ const WritePosting = () => {
             const today = new Date();
             db.collection("categories").doc(categoryId).collection('posts')
             .add({
-                text: text, 
-                title: title,
+                text: textAreaElement.value, 
+                title: titleElement.value,
                 regDate: today.toLocaleString([], {hour12: false}).replace(/시 /g, ":").replace(/분 /g, ":").replace(/초/g, ""),
                 heart: 0,
                 time: Date.now(),
-                postImageUrl: postImageUrl
+                postImageUrl: urlElement.value
             },{merge:true}).then(()=>{
                 alert("작성 완료");
                 history.push('/');
@@ -39,7 +40,7 @@ const WritePosting = () => {
             });
         }
     }
-
+    /*
     const onTitleChange = (e) => {
         setTitle(e.target.value);
     }
@@ -51,6 +52,7 @@ const WritePosting = () => {
     const onUrlChange = (e) => {
         setPostImageUrl(e.target.value);
     }
+    */
 
 
     const h1TagPush = () => {
@@ -176,9 +178,9 @@ const WritePosting = () => {
              </S.WritePostingHeader>
              <S.WritePostingInfoContainer>
                  <S.InfoContainerTitleLabel>제목:</S.InfoContainerTitleLabel>
-                 <S.WritePostingTitle id="title-control" placeholder="제목을 입력해주세요" onChange={onTitleChange}/>
+                 <S.WritePostingTitle id="title-control" placeholder="제목을 입력해주세요"/>
                  <S.PostingImageLabel>🖼️ 포스팅 대표 이미지 URL 입력:</S.PostingImageLabel>
-                 <S.PostingImageUrlInput placeholder="웹검색으로 이미지주소를 넣어주세요" onChange={onUrlChange}></S.PostingImageUrlInput>
+                 <S.PostingImageUrlInput id="url-control" placeholder="웹검색으로 이미지주소를 넣어주세요"></S.PostingImageUrlInput>
              </S.WritePostingInfoContainer>
              <S.StyleMenuContainer>
                  <S.h1TagButton onClick={h1TagPush}>h1</S.h1TagButton>
@@ -188,7 +190,7 @@ const WritePosting = () => {
                  <S.ItalicButton onClick={toItalic}>i</S.ItalicButton>
              </S.StyleMenuContainer>
              <S.WriteRegionContainer>
-                 <S.WriteRegion id="form-control" rows="35" placeholder="내용을 입력해주세요" onChange={onTextChange}/>
+                 <S.WriteRegion id="form-control" rows="35" placeholder="내용을 입력해주세요"/>
              </S.WriteRegionContainer>
         </S.WritePostingContainer>
     );

@@ -10,7 +10,6 @@ const firebaseConfig = {
     measurementId: "G-YVZ2301LFZ"
   };
 
-
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
 
