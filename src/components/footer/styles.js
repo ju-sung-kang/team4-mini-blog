@@ -139,14 +139,3 @@ export const WeatherTemperature = styled.div`
     font-size: 0.8rem;
     margin-left: 1.4rem;
 `;
-
-export const BlogBanner = styled.div`
-    width: 25rem;
-    height: 10rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    background-color: #465273;
-    border-radius: 1rem;
-`;
