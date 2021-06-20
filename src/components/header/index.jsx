@@ -8,6 +8,7 @@ const Header = () => {
     const [bannerImage, setBannerImage] = useState();
     const [blogName, setBlogName] = useState();
     const [userName, setUserName] = useState();
+    
     useEffect(() => {
         getInfo();
     }, [])

@@ -7,9 +7,6 @@ import * as S from './styles';
 const WritePosting = () => {
     const { search } = useLocation();
     const { categoryId } = queryString.parse(search);
-    const [title, setTitle] = useState("");
-    const [text, setText] = useState("");
-    const [postImageUrl, setPostImageUrl] = useState("");
     const history = useHistory();
 
     const submit = () => {
@@ -40,20 +37,6 @@ const WritePosting = () => {
             });
         }
     }
-    /*
-    const onTitleChange = (e) => {
-        setTitle(e.target.value);
-    }
-
-    const onTextChange = (e) => {
-        setText(e.target.value);
-    }
-
-    const onUrlChange = (e) => {
-        setPostImageUrl(e.target.value);
-    }
-    */
-
 
     const h1TagPush = () => {
         const element = document.getElementById('form-control');

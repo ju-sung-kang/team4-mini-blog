@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# 전산학특강 4팀 프로젝트 - 미니 블로그
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
 
-In the project directory, you can run:
 
-### `yarn start`
+## Description
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+글 작성, 정렬, 댓글, 좋아요 등의 기능이 포함된 블로그 서비스입니다
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Environment
 
-### `yarn build`
+VSCode를 기반으로 리액트, 파이어베이스를 사용해 개발
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+VSCode에서 npx create-react-app 명령어 입력 후 git clone 하여 사용
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `yarn eject`
+## Prerequisites
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* react
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
++ react-router-dom
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
++ styled-components
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
++ query-string
 
-## Learn More
++ firebase
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
++ marked
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Components
 
-### Analyzing the Bundle Size
+`footer`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+블로그 하단에 프로필, 게시판, 날씨 정보 표시
 
-### Making a Progressive Web App
+`header`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+블로그 대문. 누르면 메인 페이지로 이동
 
-### Advanced Configuration
+`post-list`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+DB에서 표시할 글 목록을 가져와 메인 페이지에 표시
 
-### Deployment
+`reply`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+DB에서 특정 글의 좋아요 수, 댓글을 가져와 글 페이지에 표시
 
-### `yarn build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Pages
+
+`main`
+
+메인 페이지. 디폴트로 설정해놓은 카테고리의 글 목록 표시
+
+`settings`
+
+설정 페이지. 프로필 정보, 카테고리 정보 수정 가능
+
+`view-posting`
+
+특정 글을 보는 페이지. 글 제목, 내용, 좋아요, 댓글 표시
+
+`write-posting`
+
+글 작성 페이지. MARKDOWN을 이용한 글 작성 가능
+
+
+
+## Usage
+
+### 기능 정리
+
+* 글 쓰기
+
++ 좋아요, 댓글 쓰기
+
++ 댓글 작성시 닉네임, 비밀번호 입력
+
++ 댓글 작성시 입력한 비밀번호를 알아야 수정, 삭제 가능
+
++ 카테고리별 글 정리
+
++ 카테고리 이름 수정, 삭제
+
++ 메인에 노출시킬 기본 카테고리 설정
+
++ 블로그명, 프로필 이미지, 소개글, 닉네임 설정
+
++ 배너 이미지 설정
+
++ 사용자 접속 지역 날씨 정보 제공
