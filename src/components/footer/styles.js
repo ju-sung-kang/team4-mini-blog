@@ -93,7 +93,7 @@ export const CategoryAndWeather = styled.div`
 
 // category
 export const Category = styled.div`
-    width: 10rem;
+    width: 30rem;
     margin-right: 1.5rem;
 `;
 

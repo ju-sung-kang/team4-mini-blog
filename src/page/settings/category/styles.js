@@ -95,7 +95,13 @@ export const CategoryNameLabel = styled.label`
 
 export const CategoryNameInput = styled.input`
     height: 50px;
-    // background-color: purple;
+    border: 2px solid gray;
+    border-radius: 0.4rem;
+    &: focus {
+        outline: none;
+        box-shadow: 0px 0px 1px 2px #B2CCFF;
+        border: 2px solid #576DE9;
+    }
 `;
 
 export const CategoryTopic = styled.label`
