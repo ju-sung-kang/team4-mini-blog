@@ -23,18 +23,22 @@ function SettingsCategory() {
         //setCategories([...categories, {"id":"id"+categories.length, "name" : null, "topic" : null}]);
     }
 
-    const deleteCategory = (e, targetId) => {
+    const deleteCategory = (e, targetData) => {
         e.preventDefault();
-        if (window.confirm('정말 삭제하시겠습니까? 해당 게시판에 쓰여진 모든 글들이 삭제됩니다.')) {
+        const categoryName = prompt("정말 삭제하시려면 이 카테고리의 이름을 그대로 입력하세요");
+        if (targetData.name === categoryName) {
+
             const currentCategories = [...categories];
-            const ct = currentCategories.filter(el => el.id == targetId);
+            const ct = currentCategories.filter(el => el.id == targetData.id);
             if(ct.length > 0) {
-                db.collection("categories").doc(targetId).delete().then(() => {
-                    console.log("Document successfully deleted!");
+                db.collection("categories").doc(targetData.id).delete().then(() => {
+                    alert("성공적으로 삭제되었습니다. ");
                 }).catch((error) => {
-                    console.error("Error removing document: ", error);
+                    alert("삭제에 실패했습니다");
                 });
             }
+        } else {
+            alert("삭제에 실패했습니다")
         }
  
     }
@@ -169,7 +173,7 @@ function SettingsCategory() {
                                         <S.CategoryTableRowData>
                                         <S.Container align='right'>
                                             <S.CommonButton onClick={e => handleUpdateBtn(e, el.id)}>수정</S.CommonButton>
-                                            <S.CommonButton onClick={e => deleteCategory(e, el.id)}>삭제</S.CommonButton>
+                                            <S.CommonButton onClick={e => deleteCategory(e, el)}>삭제</S.CommonButton>
                                         </S.Container>
                                             
                                             
