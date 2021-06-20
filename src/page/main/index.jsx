@@ -50,7 +50,6 @@ const Main = () => {
     </S.MainContainer>
     </S.MainContainerContainer>
     </S.MainContainerContainerContainer>
-
   );
 };
 
