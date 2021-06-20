@@ -127,12 +127,6 @@ export const Weather = styled.div`
     margin-top: 2rem;
 `;
 
-export const WeatherLabel = styled.div`
-    font-size: 0.9rem;
-    width: 100%;
-    
-`;
-
 export const WeatherImage = styled.img`
     width: 5rem;
     height: 5rem;
