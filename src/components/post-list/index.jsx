@@ -13,6 +13,7 @@ const PostList = (props) => {
   const [categoryName, setCategoryName] = useState('가져오는 중입니다');
   const [categoryPostNum, setCategoryPostNum] = useState(0);
   const [isPostAddImageHover, setHover] = useState(false);
+
   useEffect(() => {
     getCategoryName();
     getPostList();
@@ -46,8 +47,7 @@ const PostList = (props) => {
             const postId = doc.id;
             const shortTitle = textCut(tmp.title);
             array.push({
-              postId: postId, 
-              title: tmp.title, 
+              postId: postId,
               shortTitle: shortTitle, 
               postImageUrl: tmp.postImageUrl, 
               regDate: tmp.regDate
@@ -64,7 +64,6 @@ const PostList = (props) => {
 
   const postClick = (e) => {
     e.preventDefault();
-    console.log("clicked");
     history.push({
       pathname: '/post',
       search: `?categoryId=${props.currentCategory}&postId=${e.target.id}`,

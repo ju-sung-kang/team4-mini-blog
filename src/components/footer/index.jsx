@@ -48,7 +48,8 @@ const Footer = (props) => {
                 setUser({
                     image: tmp.profileImageUrl,
                     name: tmp.nickName,
-                    intro: tmp.introduction
+                    intro: tmp.introduction,
+                    blogName: tmp.blogName
                 });
                 console.log("footer user data getting success");
             }
@@ -109,6 +110,7 @@ const Footer = (props) => {
                     <S.CategorySettings onClick={goToSettingsCategory}>⚙️ 카테고리 설정</S.CategorySettings>
                 </S.Settings>
             </S.Profile>
+            <S.CategoryAndWeather>
             <S.Category>
                 <S.CategoryLabel>카테고리</S.CategoryLabel>
                 <S.CategoryUl>
@@ -127,6 +129,8 @@ const Footer = (props) => {
                 <S.WeatherTemperature>{weather.name} / {weather.temperature}℃</S.WeatherTemperature>
                 <S.WeatherImage src={img_url} alt="weather_icon"/>
             </S.Weather>
+            </S.CategoryAndWeather>
+            <S.BlogBanner>{user.blogName}&nbsp;_&nbsp;{user.name}</S.BlogBanner>
         </S.FooterContainer>
     )
 }

@@ -86,6 +86,11 @@ export const CategorySettings = styled.div`
     font-weight: 900;
 `;
 
+export const CategoryAndWeather = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
 // category
 export const Category = styled.div`
     width: 10rem;
@@ -95,6 +100,7 @@ export const Category = styled.div`
 export const CategoryLabel = styled.div`
     font-size: 0.9rem;
     margin-left: 1.4rem;
+    color: red;
 `;
 
 export const NoCategory = styled.div`
@@ -118,6 +124,7 @@ export const CategoryTitle = styled.li`
 
 export const Weather = styled.div`
     width: 10rem;
+    margin-top: 2rem;
 `;
 
 export const WeatherLabel = styled.div`
@@ -131,9 +138,21 @@ export const WeatherImage = styled.img`
     height: 5rem;
     object-fit: cover;
     font-size: 0.8rem;
+    margin-left: 1.4rem;
 `;
 
 export const WeatherTemperature = styled.div`
     font-size: 0.8rem;
+    margin-left: 1.4rem;
 `;
 
+export const BlogBanner = styled.div`
+    width: 25rem;
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: #465273;
+    border-radius: 1rem;
+`;
