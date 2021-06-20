@@ -130,7 +130,7 @@ const Footer = (props) => {
                 <S.WeatherImage src={img_url} alt="weather_icon"/>
             </S.Weather>
             </S.CategoryAndWeather>
-            <S.BlogBanner>{user.blogName}&nbsp;_&nbsp;{user.name}</S.BlogBanner>
+            
         </S.FooterContainer>
     )
 }

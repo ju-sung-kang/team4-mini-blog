@@ -16,14 +16,14 @@ function Reply(props) {
     let [reReplyContent, setReReplyContent] = useState(""); // 답글 내용
     let [replyEditContent, setReplyEditContent] = useState(""); // 댓글 수정 내용 저장
     let [isEditing, setIsEditing] = useState([false]);  // 댓글을 수정 중인지 여부 저장
-    let [replyNickName, setReplyNickName] = useState();
-    let [replyPassword, setReplyPassword] = useState();
-    let [reReplyNickName, setReReplyNickName] = useState();
-    let [reReplyPassword, setReReplyPassword] = useState();
+    let [replyNickName, setReplyNickName] = useState(); // 댓글 닉네임
+    let [replyPassword, setReplyPassword] = useState(); // 댓글 비밀번호
+    let [reReplyNickName, setReReplyNickName] = useState(); // 답글 닉네임
+    let [reReplyPassword, setReReplyPassword] = useState(); // 답글 비밀번호
 
     // props로 주어지는 데이터
-    let [categoryID, setCategoryID] = useState();
-    let [postID, setPostID] = useState();
+    let [categoryID, setCategoryID] = useState();   // 카테고리 아이디
+    let [postID, setPostID] = useState();   // 글 아이디
     
     // 정보 설정
     let [post, setPost] = useState();   // 글 정보
